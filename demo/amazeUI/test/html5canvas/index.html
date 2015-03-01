@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>演示：HTML5之画布canvas</title>
+<link rel="stylesheet" type="text/css" href="http://www.helloweba.com/demo/css/main.css" />
+<style type="text/css">
+.demo{width:620px; margin:60px auto; text-align:center}
+.demo p{height:60px}
+</style>
+</head>
+
+<body>
+<div id="header">
+   <div id="logo"><h1><a href="http://www.helloweba.com" title="返回helloweba首页">helloweba</a></h1></div>
+</div>
+
+<div id="main">
+  <h2 class="top_title"><a href="http://www.helloweba.com/view-blog-185.html">HTML5之画布canvas</a></h2>
+  <div class="demo">
+    <p>注意：您必须使用现代浏览器才能看到效果，IE8及以下版本不支持。</p>
+    <canvas id="square" width="200" height="100">your browser does not support the canvas tag</canvas>
+    
+    <canvas id="line"></canvas>
+    
+    <canvas id="circle"></canvas>
+    
+    <canvas id="animate" width="200" height="200" style="border:1px solid #d3d3d3"></canvas>
+  </div>
+</div>
+<script type="text/javascript">
+var canvas=document.getElementById('square');
+var ctx=canvas.getContext('2d');
+ctx.fillStyle='#FF0000';
+ctx.fillRect(0,0,200,100);
+
+//画线
+var line=document.getElementById('line');
+var c=line.getContext('2d');
+c.moveTo(20,20);
+c.lineTo(200,100);
+c.lineTo(20,100);
+c.stroke();
+
+//画圆
+var c=document.getElementById('circle');
+var r=c.getContext('2d');
+r.fillStyle='#ff0000';
+r.beginPath();
+r.arc(70,80,45,0,Math.PI*2,true);
+r.closePath();
+r.fill();
+
+//动画
+var x=0;
+var y=0;
+var ctx = document.getElementById("animate").getContext("2d");
+setInterval(function(){
+	ctx.clearRect(0,0,600,600);
+	ctx.fillStyle="#fc0";
+	ctx.beginPath();
+	ctx.arc(x++,y++,15,0,Math.PI*2,true);
+	ctx.closePath();
+	ctx.fill();
+},10);
+</script>
+<div id="footer">
+    <p>Powered by helloweba.com  允许转载、修改和使用本站的DEMO，但请注明出处：<a href="http://www.helloweba.com">www.helloweba.com</a></p>
+</div>
+</body>
+</html>

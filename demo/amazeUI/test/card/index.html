@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0">
+<title>演示：PHP生成唯一会员卡号</title>
+<link rel="stylesheet" type="text/css" href="http://www.helloweba.com/demo/css/main.css" />
+<style type="text/css">
+.demo{margin:60px auto 0 auto; min-height:150px; text-align:center}
+.input{padding:1px; width:200px; line-height:22px; border:1px solid #ccc}
+.btn{overflow: hidden;display:inline-block;*display:inline;padding:4px 20px 4px;font-size:14px;line-height:18px;*line-height:20px;color:#fff;text-align:center;vertical-align:middle;cursor:pointer;background-color:#5bb75b;border:1px solid #cccccc;border-color:#e6e6e6 #e6e6e6 #bfbfbf;border-bottom-color:#b3b3b3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px; margin-left:2px}
+.demo p{height:42px}
+#result{margin-top:20px; line-height:26px; font-size:20px; text-align:center; color:#f30; word-break:break-all}
+</style>
+<script type="text/javascript" src="http://libs.useso.com/js/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#getCard").click(function(){
+		var card = $("#card").val();
+		$.post("code.php",{no:card},function(msg){
+			if(msg==''){
+				$("#result").html('出错了！');
+			}else{
+				$("#result").html('生成卡号为：'+msg);
+			}
+		});
+	});
+});
+</script>
+</head>
+
+<body>
+<div id="header">
+   <div id="logo"><h1><a href="http://www.helloweba.com" title="返回helloweba首页">helloweba</a></h1></div>
+</div>
+
+<div id="main">
+   <h2 class="top_title"><a href="http://www.helloweba.com/view-blog-259.html">PHP生成唯一会员卡号</a></h2>
+   <div class="demo">
+   		<p>输入一个1-10,000,000的数字，会生成一个10位的卡号。</p>
+   		<p>请输入一个数字：<input type="text" class="input" id="card" maxlength="8"> <input type="button" class="btn" id="getCard" value="生成卡号"></p>
+        <div id="result"></div>
+   </div>
+
+</div>
+
+
+<div id="footer">
+    <p>Powered by helloweba.com  允许转载、修改和使用本站的DEMO，但请注明出处：<a href="http://www.helloweba.com">www.helloweba.com</a></p>
+</div>
+</body>
+</html>

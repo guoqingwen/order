@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="keywords" content="jquery，广告代码">
+<meta name="description" content="Helloweba演示平台，演示XHTML、CSS、jquery、PHP案例和示例">
+<title>演示：右下角悬浮广告</title>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/adver/adver.js"></script>
+<style>
+img{border:none}
+#pop{background:#fff;width:300px; height:282px;font-size:12px;position:fixed;right:0;bottom:0;}
+#popHead{line-height:32px;background:#f6f0f3;border-bottom:1px solid #e0e0e0;font-size:12px;padding:0 0 0 10px;}
+#popHead h2{font-size:14px;color:#666;line-height:32px;height:32px;}
+#popHead #popClose{position:absolute;right:10px;top:1px;}
+#popHead a#popClose:hover{color:#f00;cursor:pointer;}
+</style>
+</head>
+
+<body>
+
+
+<div id="main">
+  <h2 class="top_title"><a href="http://www.helloweba.com/view-blog-256.html" title="点击看教程">右下角悬浮广告</a></h2>
+  <div id="pop" style="display:none;">
+  	<div id="popHead">
+		<a id="popClose" title="关闭">关闭</a>
+		<h2>赞助广告</h2>
+	</div>
+	<div id="popContent">
+	<a href="http://www.helloweba.com/" target="_blank"><img src="images/imgad.jpg"></a>
+	</div>
+  </div>
+<script>
+var popad=new Pop();
+</script>
+  <br/><br/><br/><br/><br/>
+</div>
+
+</body>
+</html>

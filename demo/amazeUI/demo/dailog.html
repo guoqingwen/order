@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+
+<script type="text/javascript" src="jquery.min.js"></script> 
+<script type="text/javascript" src="jquery.popwin.js"></script> 
+
+
+<script type="text/javascript" charset="utf-8"> 
+$(function() { 
+$("#btn01").popwin({ 
+element: "#box01", 
+title: "请填写以下您的基本信息" 
+}); 
+$("#btn02").popwin({ 
+element: "#box02", 
+title: "请登陆" 
+}); 
+}) 
+</script> 
+<title>DEMO</title> 
+</head> 
+<body> 
+<div id="box01">
+	<div id="searchBox"></div>
+	<div id="map_container"></div> 
+	<form action="" method="post" onsubmit="return check();"> 
+	姓名： 
+	<input type="text" size="30" name="username" id="username" onblur="return check();" value="" /><span id="nameErr"></span> 
+	<br /> 
+	<br /> 
+	密码： 
+	<input type="password" size="30" name="password" onblur="return check();" id="password" value="" /><span id="passwordErr"></span> 
+	<br /> 
+	<br /> 
+	邮箱： 
+	<input type="text" size="30" id="email" value="" onblur="return check();" /><span id="emailErr"></span> 
+	<br /> 
+	<br /> 
+	<input type="submit" value="确定" /> 
+	<input type="reset" value="取消" /> 
+	</form> 
+</div> 
+<div id="box02"> 
+	<form action="" method="post"> 
+	姓名： 
+	<input type="text" size="30" value="" /> 
+	<br /> 
+	<br /> 
+	密码： 
+	<input type="password" size="30" value="" /> 
+	<br /> 
+	<br /> 
+	<input type="submit" value="确定" /> 
+	<input type="reset" value="取消" /> 
+	</form> 
+</div> 
+<button value="注册" id="btn01">注册</button> 
+<button value="登陆" id="btn02">登陆</button> 
+</body> 
+</html> 
