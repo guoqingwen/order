@@ -14,6 +14,14 @@ exports.login = function (req, res, next) {
 exports.register = function (req, res, next) {
     res.render('register.html');
 };
+exports.admin = function (req, res, next) {
+    if(req.session.user){
+        res.render('admin.html', {user:req.session.user});
+    } 
+    else{
+        res.redirect('/login');
+    }
+};
 
 exports.init = function (req, res, next) {
     var user = new User({ 

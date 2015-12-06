@@ -14,7 +14,8 @@ exports.userLogin = function (req, res, next) {
 	    console.log(doc);
 	    var userObj = {'username':username};
         req.session.user = userObj;
-	    res.render('admin.html', doc);
+        res.redirect('/admin');
+	    //res.render('admin.html');
 	});
 };
 

@@ -23,7 +23,14 @@ app.configure(function(){
       saveUninitialized:true,
       secret:'ijiache.com'
   }));
-
+  //拦截所有请求
+  app.use(function(req, res, next){
+    if(req.session){//所有message通过session传递
+      res.locals.message = req.session.message;
+      res.locals.errmsg = req.session.errmsg;
+    }
+    next();
+  });
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
@@ -39,6 +46,7 @@ app.get('/', commonContrller.index);
 app.get('/init', commonContrller.init);
 app.get('/login', commonContrller.login);
 app.get('/register', commonContrller.register);
+app.get('/admin', commonContrller.admin);
 app.get('/checkUserName', loginContrller.checkUserName);
 app.get('/users', loginContrller.users);
 app.get('/logout',function(req,res){
