@@ -27,7 +27,7 @@ exports.login = function(username, password, callback) {
 }
 
 //用户注册
-exports.register = function(username, password,callback) {
+exports.register = function(username, password, email,callback) {
     exports.findUserById(username, function(err, doc) {
         if (err){
             callback(err, {ret:0, message:"register is failed!!"});
@@ -40,6 +40,7 @@ exports.register = function(username, password,callback) {
             var newUser = new User();
             newUser.username = username;
             newUser.password = password;
+            newUser.email = email;
             newUser.save(function(err){
                 if(err){
                     util.log("FATAL"+err);
@@ -68,8 +69,32 @@ exports.checkUserName = function(username, callback) {
     });
 }
 
+//检查用户
+exports.forget = function(email, callback) {
+    exports.findEmailById(email, function(err, doc) {
+        if (err){
+            callback(err, {ret:0, message:"forget is failed!!"});
+        }
+        else if(doc){
+            callback(err, {ret:1, message:"验证码已经发到你的邮箱:"+email})
+        }
+        else{
+            callback(err, {ret:0, message:"验证码发送失败！"});
+        }
+    });
+}
+
 var findUserById = exports.findUserById = function(username,callback){
     User.findOne({username:username},function(err,doc){
+        if (err) {
+            util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
+var findEmailById = exports.findEmailById = function(email,callback){
+    User.findOne({email:email},function(err,doc){
         if (err) {
             util.log('FATAL '+ err);
             callback(err, null);

@@ -26,12 +26,14 @@ exports.admin = function (req, res, next) {
 exports.init = function (req, res, next) {
     var user = new User({ 
         username : 'wenguoqing', 
-        password : '123456'
+        password : '123456',
+        email:'568565953@qq.com'
     }); 
     user.save(); 
     user = new User({ 
         username : 'test1', 
-        password : '123456'
+        password : '123456',
+        email:'wenguoqing1991@126.com'
     }); 
     user.save(); 
     res.send('Data inited'); 

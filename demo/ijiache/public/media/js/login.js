@@ -14,18 +14,15 @@ var Login = function () {
 	                },
 	                password: {
 	                    required: true
-	                },
-	                remember: {
-	                    required: false
 	                }
 	            },
 
 	            messages: {
 	                username: {
-	                    required: "Username is required."
+	                    required: "请输入用户名."
 	                },
 	                password: {
-	                    required: "Password is required."
+	                    required: "请输入密码."
 	                }
 	            },
 
@@ -45,17 +42,13 @@ var Login = function () {
 
 	            errorPlacement: function (error, element) {
 	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
-	            },
-
-	            submitHandler: function (form) {
-	                window.location.href = "index.html";
 	            }
 	        });
 
 	        $('.login-form input').keypress(function (e) {
 	            if (e.which == 13) {
 	                if ($('.login-form').validate().form()) {
-	                    window.location.href = "index.html";
+	                    window.location.href = "/login";
 	                }
 	                return false;
 	            }
@@ -95,17 +88,13 @@ var Login = function () {
 
 	            errorPlacement: function (error, element) {
 	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
-	            },
-
-	            submitHandler: function (form) {
-	                window.location.href = "index.html";
 	            }
 	        });
 
 	        $('.forget-form input').keypress(function (e) {
 	            if (e.which == 13) {
 	                if ($('.forget-form').validate().form()) {
-	                    window.location.href = "index.html";
+	                    window.location.href = "/login";
 	                }
 	                return false;
 	            }
@@ -171,10 +160,6 @@ var Login = function () {
 	                } else {
 	                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
 	                }
-	            },
-
-	            submitHandler: function (form) {
-	                window.location.href = "index.html";
 	            }
 	        });
 
