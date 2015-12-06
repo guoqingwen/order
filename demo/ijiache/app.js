@@ -1,9 +1,11 @@
-var express = require('express')
- , loginContrller = require('./controllers/LoginController')
- , commonContrller = require('./controllers/CommonController')
-  , http = require('http')
-  , config = require("./config");
+var express = require('express');
+var http = require('http');
+var config = require("./config");
 var models = require('./dao/models');
+var session = require('express-session');
+var cookieParser = require('cookie-parser');
+var loginContrller = require('./controllers/LoginController');
+var commonContrller = require('./controllers/CommonController');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -12,13 +14,21 @@ app.configure(function(){
   app.set('port', config.port);
   app.set('view engine', 'ejs');
   app.set('views', __dirname + '/views');
+  //use cookie session
+  app.use(cookieParser('ijiache.com'));
+  app.use(session({
+      name: 'ijiache.com',
+      cookie: { maxAge: 600000 },
+      resave:true,
+      saveUninitialized:true,
+      secret:'ijiache.com'
+  }));
 
   app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
-
 });
 
 app.configure('development', function(){
@@ -27,9 +37,22 @@ app.configure('development', function(){
 
 app.get('/', commonContrller.index);
 app.get('/init', commonContrller.init);
-app.get('/users', loginContrller.users);
 app.get('/login', commonContrller.login);
+app.get('/register', commonContrller.register);
+app.get('/checkUserName', loginContrller.checkUserName);
+app.get('/users', loginContrller.users);
+app.get('/logout',function(req,res){
+    req.session.user = null;
+    res.redirect('/login');
+});
+app.get('/demo',function(req,res){
+    //res.redirect('demo/index.html');
+    res.render('demo/index.html');
+});
+//define post
 app.post('/user/login', loginContrller.userLogin);
+app.post('/user/register', loginContrller.userRegister);
+
 
 models.connect(function(error){
     if (error) throw error;

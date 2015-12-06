@@ -11,6 +11,9 @@ exports.index = function (req, res, next) {
 exports.login = function (req, res, next) {
     res.render('login.html');
 };
+exports.register = function (req, res, next) {
+    res.render('register.html');
+};
 
 exports.init = function (req, res, next) {
     var user = new User({ 

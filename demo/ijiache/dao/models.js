@@ -4,7 +4,7 @@ var dburl = require("../config").db;//数据库地址
 // Define User schema 
 var _User = new Schema({ 
     username : String, 
-    password : String 
+    password : String
 });
 // export them 
 exports.User = mongoose.model('t_user', _User);
