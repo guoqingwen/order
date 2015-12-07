@@ -20,7 +20,7 @@ Login page
   width: 291px;
   margin: 0 auto; 
   margin-bottom: 0px;
-  padding: 30px;  
+  padding: 100px;  
   padding-top: 20px;  
   padding-bottom: 15px;  
 }
@@ -34,6 +34,9 @@ Login page
 
 .login .content p {
   color: #222;
+}
+.login .content a {
+  font-size: 14px;
 }
 
 .login .content .login-form,

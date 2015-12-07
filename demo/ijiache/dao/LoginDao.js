@@ -28,12 +28,19 @@ exports.login = function(username, password, callback) {
 
 //用户注册
 exports.register = function(username, password, email,callback) {
-    exports.findUserById(username, function(err, doc) {
+    exports.findEmailById(email, function(err, doc) {
         if (err){
-            callback(err, {ret:0, message:"register is failed!!"});
+            callback(err, {ret:0, message:"注册失败!!"});
         }
         else if(doc){
-            console.log('register is success:', doc);
+            callback(err, {ret:0, message:"邮箱已经存在:"+email});
+        }
+    });
+    exports.findUserById(username, function(err, doc) {
+        if (err){
+            callback(err, {ret:0, message:"注册失败!!"});
+        }
+        else if(doc){
             callback(err, {ret:0, message:"用户名已经存在!"})
         }
         else{
@@ -69,17 +76,17 @@ exports.checkUserName = function(username, callback) {
     });
 }
 
-//检查用户
+//用户重置密码
 exports.forget = function(email, callback) {
     exports.findEmailById(email, function(err, doc) {
         if (err){
             callback(err, {ret:0, message:"forget is failed!!"});
         }
         else if(doc){
-            callback(err, {ret:1, message:"验证码已经发到你的邮箱:"+email})
+            callback(err, {ret:1, message:"重置链接已经发送到你的邮箱:"+email});
         }
         else{
-            callback(err, {ret:0, message:"验证码发送失败！"});
+            callback(err, {ret:0, message:"您输入的邮箱地址不存在！"});
         }
     });
 }

@@ -68,7 +68,7 @@ var Login = function () {
 
 	            messages: {
 	                email: {
-	                    required: "Email is required."
+	                    required: "请输入邮箱地址."
 	                }
 	            },
 
@@ -136,7 +136,19 @@ var Login = function () {
 
 	            messages: { // custom messages for radio buttons and checkboxes
 	                tnc: {
-	                    required: "Please accept TNC first."
+	                    required: "请勾选同意选择框."
+	                },
+	                username: {
+	                    required: "请输入用户名."
+	                },
+	                password: {
+	                    required: "请输入密码."
+	                },
+	                rpassword: {
+	                    equalTo: "两次输入密码不一致."
+	                },
+	                email: {
+	                    required: "请输入正确的邮箱地址."
 	                }
 	            },
 
