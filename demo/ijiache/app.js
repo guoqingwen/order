@@ -6,6 +6,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var loginContrller = require('./controllers/LoginController');
 var commonContrller = require('./controllers/CommonController');
+var jiaxiao = require('./controllers/jiaxiao')
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -14,6 +15,7 @@ app.configure(function(){
   app.set('port', config.port);
   app.set('view engine', 'ejs');
   app.set('views', __dirname + '/views');
+
   //use cookie session
   app.use(cookieParser('ijiache.com'));
   app.use(session({
@@ -23,6 +25,7 @@ app.configure(function(){
       saveUninitialized:true,
       secret:'ijiache.com'
   }));
+
   //拦截所有请求
   app.use(function(req, res, next){
     if(req.session){//所有message通过session传递
@@ -57,6 +60,16 @@ app.get('/demo',function(req,res){
     //res.redirect('demo/index.html');
     res.render('demo/index.html');
 });
+
+//驾校管理接口
+app.post('/jiaxiao/new', jiaxiao.new);
+app.post('/jiaxiao/:id/edit', jiaxiao.save);
+app.get('/jiaxiao', jiaxiao.index);
+app.get('/jiaxiao/:id', jiaxiao.view);
+app.get('/jiaxiao/:id/edit', jiaxiao.edit);
+app.get('/jiaxiao/:id/delete', jiaxiao.delete);
+app.get('/jiaxiao/:id/finish', jiaxiao.finish);
+
 //define post
 app.post('/user/login', loginContrller.userLogin);
 app.post('/user/register', loginContrller.userRegister);
@@ -68,6 +81,7 @@ app.on('close', function(errno) {
     models.disconnect(function(err) { });
 });
 
+//开启服务 监听端口
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
