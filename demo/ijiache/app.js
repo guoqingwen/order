@@ -61,7 +61,6 @@ app.get('/demo',function(req,res){
 app.post('/user/login', loginContrller.userLogin);
 app.post('/user/register', loginContrller.userRegister);
 
-
 models.connect(function(error){
     if (error) throw error;
 });
