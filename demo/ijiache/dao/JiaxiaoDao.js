@@ -2,16 +2,15 @@ var util = require('util');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//定义todo对象模型
-var TodoScheme = new Schema({
-    title:String
-    ,finished:{type:Boolean,default:false}
-
-    ,post_date:{type:Date,default:Date.now}
+//定义JiaXiao对象模型
+var JiaXiaoScheme = new Schema({
+    title:String,
+    finished:{type:Boolean,default:false},
+    post_date:{type:Date,default:Date.now}
 });
 
 //访问todo对象模型
-mongoose.model('t_jiaxiao', TodoScheme);
+mongoose.model('t_jiaxiao', JiaXiaoScheme);
 var Todo = mongoose.model('t_jiaxiao');
 
 exports.add = function(title,callback) {

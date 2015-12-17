@@ -6,7 +6,8 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var loginContrller = require('./controllers/LoginController');
 var commonContrller = require('./controllers/CommonController');
-var jiaxiao = require('./controllers/jiaxiao')
+var jiaxiao = require('./controllers/JiaxiaoController');
+var store = require('./controllers/JiaxiaoStoreController');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -69,6 +70,17 @@ app.get('/jiaxiao/:id', jiaxiao.view);
 app.get('/jiaxiao/:id/edit', jiaxiao.edit);
 app.get('/jiaxiao/:id/delete', jiaxiao.delete);
 app.get('/jiaxiao/:id/finish', jiaxiao.finish);
+
+//驾校门店管理接口
+app.post('/store/add', store.add);
+app.post('/store/:id/edit', store.update);
+app.get('/store', store.index);
+app.get('/stores', store.list);
+app.get('/checkAdmin', store.checkAdmin);
+app.get('/store/:id', store.view);
+app.get('/store/:id/edit', store.edit);
+app.get('/store/:id/delete', store.delete);
+app.get('/store/:id/available', store.available);
 
 //define post
 app.post('/user/login', loginContrller.userLogin);

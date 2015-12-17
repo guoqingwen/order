@@ -16,7 +16,7 @@ exports.new = function (req, res, next) {
     var title = req.body.title || '';
     title = title.trim();
     if (!title) {
-        return res.render('jiaxiao/error.html', {message: '名称不能为空'});
+        return res.render('error.html', {message: '名称不能为空'});
     }
     db.add(title, function (err, row) {
         if (err) {
@@ -48,7 +48,7 @@ exports.save = function (req, res, next) {
     var title = req.body.title || '';
     title = title.trim();
     if (!title) {
-        return res.render('jiaxiao/error.html', {message: '名称不能为空'});
+        return res.render('error.html', {message: '名称不能为空'});
     }
     db.editTitle(id,title,function (err, result) {
         if (err) {
