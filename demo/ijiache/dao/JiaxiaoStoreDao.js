@@ -8,7 +8,9 @@ require('date-utils');
 //表示驾校门店
 var StoreScheme = new Schema({
     title:String,//名称
+    province:String,//省
     city:String,//城市
+    district:String,//区
     address:String,//地址
     contact:String,//联系人名称
     iphone:String,//电话号码
@@ -24,12 +26,14 @@ var StoreScheme = new Schema({
 mongoose.model('t_jiaxiao_store', StoreScheme);
 var JiaxiaoStore = mongoose.model('t_jiaxiao_store');
 
-exports.add = function(title, city, address, contact, iphone, telephone, admin, adminPwd, callback) {
+exports.add = function(title, province, city, district, address, contact, iphone, telephone, admin, adminPwd, callback) {
     var now = new Date();
     now.add({years: 1});
     var newStore = new JiaxiaoStore();
     newStore.title = title;
+    newStore.province = province;
     newStore.city = city;
+    newStore.district = district;
     newStore.address = address;
     newStore.contact = contact;
     newStore.iphone = iphone;
@@ -60,13 +64,15 @@ exports.delete = function(id, callback) {
 }
 
 /** 修改门店信息 */
-exports.editStore = function(id, title, city, address, contact, iphone, telephone, admin, adminPwd, callback) {
+exports.editStore = function(id, title, province, city, district, address, contact, iphone, telephone, admin, adminPwd, callback) {
     exports.findStoreById(id, function(err, doc) {
         if (err)
             callback(err);
         else {
             doc.title = title;
+            doc.province = province;
             doc.city = city;
+            doc.district = district;
             doc.address = address;
             doc.contact = contact;
             doc.iphone = iphone;

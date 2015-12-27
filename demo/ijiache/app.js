@@ -4,10 +4,10 @@ var config = require("./config");
 var models = require('./dao/models');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var loginContrller = require('./controllers/LoginController');
-var commonContrller = require('./controllers/CommonController');
-var jiaxiao = require('./controllers/JiaxiaoController');
-var store = require('./controllers/JiaxiaoStoreController');
+var loginController = require('./controllers/LoginController');
+var commonController = require('./controllers/CommonController');
+var jiaxiaoController = require('./controllers/JiaxiaoController');
+var storeController = require('./controllers/JiaxiaoStoreController');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -46,45 +46,44 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', commonContrller.index);
-app.get('/init', commonContrller.init);
-app.get('/login', commonContrller.login);
-app.get('/register', commonContrller.register);
-app.get('/admin', commonContrller.admin);
-app.get('/checkUserName', loginContrller.checkUserName);
-app.get('/users', loginContrller.users);
+app.get('/', commonController.index);
+app.get('/init', commonController.init);
+app.get('/login', commonController.login);
+app.get('/register', commonController.register);
+app.get('/admin', commonController.admin);
+app.get('/checkUserName', loginController.checkUserName);
+app.get('/users', loginController.users);
 app.get('/logout',function(req,res){
     req.session.user = null;
     res.redirect('/login');
 });
 app.get('/demo',function(req,res){
-    //res.redirect('demo/index.html');
     res.render('demo/index.html');
 });
 
 //驾校管理接口
-app.post('/jiaxiao/new', jiaxiao.new);
-app.post('/jiaxiao/:id/edit', jiaxiao.save);
-app.get('/jiaxiao', jiaxiao.index);
-app.get('/jiaxiao/:id', jiaxiao.view);
-app.get('/jiaxiao/:id/edit', jiaxiao.edit);
-app.get('/jiaxiao/:id/delete', jiaxiao.delete);
-app.get('/jiaxiao/:id/finish', jiaxiao.finish);
+app.post('/jiaxiao/new', jiaxiaoController.new);
+app.post('/jiaxiao/:id/edit', jiaxiaoController.save);
+app.get('/jiaxiao', jiaxiaoController.index);
+app.get('/jiaxiao/:id', jiaxiaoController.view);
+app.get('/jiaxiao/:id/edit', jiaxiaoController.edit);
+app.get('/jiaxiao/:id/delete', jiaxiaoController.delete);
+app.get('/jiaxiao/:id/finish', jiaxiaoController.finish);
 
 //驾校门店管理接口
-app.post('/store/add', store.add);
-app.post('/store/:id/edit', store.update);
-app.get('/store', store.index);
-app.get('/stores', store.list);
-app.get('/checkAdmin', store.checkAdmin);
-app.get('/store/:id', store.view);
-app.get('/store/:id/edit', store.edit);
-app.get('/store/:id/delete', store.delete);
-app.get('/store/:id/available', store.available);
+app.post('/store/add', storeController.add);
+app.post('/store/:id/edit', storeController.update);
+app.get('/store', storeController.index);
+app.get('/stores', storeController.list);
+app.get('/checkAdmin', storeController.checkAdmin);
+app.get('/store/:id', storeController.view);
+app.get('/store/:id/edit', storeController.edit);
+app.get('/store/:id/delete', storeController.delete);
+app.get('/store/:id/available', storeController.available);
 
 //define post
-app.post('/user/login', loginContrller.userLogin);
-app.post('/user/register', loginContrller.userRegister);
+app.post('/user/login', loginController.userLogin);
+app.post('/user/register', loginController.userRegister);
 
 models.connect(function(error){
     if (error) throw error;

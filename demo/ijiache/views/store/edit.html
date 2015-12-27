@@ -1,9 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/city/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#id_city").citySelect({
+                prov:"<%= todo.province %>",
+                city:"<%= todo.city %>",
+                dist:"<%= todo.district %>",
+                nodata:"none"
+            });
+
+        });
+    </script>
+</head>
+<body>
 <div class="box post">
-  <h2>修改驾校信息</h2>
+  <h2>修改驾校门店信息</h2>
 
   <form action="?" method="post" id="post_new">
       <p>名称:<input type="text" name="title" value="<%= todo.title %>" /></p>
-      <p>城市:<input type="text" name="city" value="<%= todo.city %>" /></p>
+      <div>
+          <label for="city">城市:</label>
+          <div id="id_city">
+              <select class="prov" name="province"></select>
+              <select class="city" name="city" disabled="disabled"></select>
+              <select class="dist" name="district" disabled="disabled"></select>
+          </div>
+      </div>
       <p>地址：<input type="text" name="address" value="<%= todo.address %>" /></p>
       <p>联系人：<input type="text" name="contact" value="<%= todo.contact %>" /></p>
       <p>手机：<input type="text" name="iphone" value="<%= todo.iphone %>" /></p>
@@ -12,5 +37,10 @@
       <p>管理员密码：<input type="password" name="adminPwd" value="<%= todo.adminPwd %>" /></p>
     <p><input type="submit" class="submit" value="确定" /></p>
   </form>
+<p>
+    <a href="javascript: history.back();">返回</a> |
+    <a href="/">首页</a>
+</p>
 </div>
+</body>
 

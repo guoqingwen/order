@@ -25,6 +25,8 @@ exports.list = function (req, res, next) {
 exports.add = function (req, res, next) {
     var title = req.body.title || '';
     var city = req.body.city.trim();
+    var province = req.body.province.trim();
+    var district = req.body.district.trim();
     var address = req.body.address.trim();
     var contact = req.body.contact.trim();
     var iphone = req.body.iphone.trim();
@@ -36,7 +38,7 @@ exports.add = function (req, res, next) {
     if (!title) {
         return res.render('error.html', {message: '名称不能为空'});
     }
-    db.add(title, city, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
+    db.add(title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
         if (err) {
             return next(err);
         }
@@ -64,6 +66,8 @@ exports.edit = function (req, res, next) {
 exports.update = function (req, res, next) {
     var id = req.params.id;
     var city = req.body.city.trim();
+    var province = req.body.province.trim();
+    var district = req.body.district.trim();
     var title = req.body.title || '';
     var address = req.body.address.trim();
     var contact = req.body.contact.trim();
@@ -76,7 +80,7 @@ exports.update = function (req, res, next) {
     if (!title) {
         return res.render('error.html', {message: '名称不能为空'});
     }
-    db.editStore(id,title,city, address, contact, iphone, telephone, admin, adminPwd, function (err, result) {
+    db.editStore(id,title,province,city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, result) {
         if (err) {
             return next(err);
         }
