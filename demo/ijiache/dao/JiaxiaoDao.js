@@ -74,7 +74,7 @@ exports.editFinished = function(id, finished, callback) {
     });
 }
 
-exports.allTodos = function(callback) {
+exports.allJiaxiaos = function(callback) {
     Todo.find({}, callback);
 }
 

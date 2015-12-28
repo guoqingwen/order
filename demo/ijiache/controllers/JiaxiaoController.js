@@ -12,6 +12,25 @@ exports.index = function (req, res, next) {
     });
 };
 
+exports.getName = function (req, res, next) {
+    var jiaxiaoId = req.params.id;
+    db.findTodoById(jiaxiaoId, function (err, todos) {
+        if (err) {
+            return next(err);
+        }
+        res.json(todos);
+    });
+};
+
+exports.getList = function (req, res, next) {
+    db.allJiaxiaos(function (err, todos) {
+        if (err) {
+            return next(err);
+        }
+        res.json(todos);
+    });
+};
+
 exports.new = function (req, res, next) {
     var title = req.body.title || '';
     title = title.trim();

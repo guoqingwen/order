@@ -7,6 +7,7 @@ require('date-utils');
 //定义StoreScheme对象模型
 //表示驾校门店
 var StoreScheme = new Schema({
+    jiaxiaoId:String,//驾校Id
     title:String,//名称
     province:String,//省
     city:String,//城市
@@ -26,10 +27,11 @@ var StoreScheme = new Schema({
 mongoose.model('t_jiaxiao_store', StoreScheme);
 var JiaxiaoStore = mongoose.model('t_jiaxiao_store');
 
-exports.add = function(title, province, city, district, address, contact, iphone, telephone, admin, adminPwd, callback) {
+exports.add = function(jiaxiaoId, title, province, city, district, address, contact, iphone, telephone, admin, adminPwd, callback) {
     var now = new Date();
     now.add({years: 1});
     var newStore = new JiaxiaoStore();
+    newStore.jiaxiaoId = jiaxiaoId;
     newStore.title = title;
     newStore.province = province;
     newStore.city = city;
@@ -120,6 +122,11 @@ exports.availabled = function(id, callback) {
     });
 }
 
+/** 获取驾校所有门店  */
+exports.getStoreByJiaxiao = function(jiaxiaoId, callback) {
+    JiaxiaoStore.findOne({jiaxiaoId:jiaxiaoId}, callback);
+}
+
 /**获取所有门店列表*/
 exports.allStores = function(callback) {
     JiaxiaoStore.find({}, callback);
@@ -157,5 +164,6 @@ var findStoreByAdmin = exports.findStoreByAdmin = function(admin,callback){
         callback(null, doc);
     });
 }
+
 
 

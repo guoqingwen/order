@@ -13,6 +13,22 @@
         nodata:"none"
       });
 
+      $.ajax(
+              {
+                url:'/getJiaxiaos',
+                type:'get',
+                date:{},
+                dateType:'json',
+                success:function(data){
+                  var len = data.length;
+                  for (var i = 0 ; i < len; i++){
+                    var obj = data[i];
+                    $("#id_jiaxiao").append('<option value='+obj._id+'>'+obj.title+'</option>');
+                  }
+
+                }
+              }
+      );
     });
   </script>
 </head>
@@ -54,6 +70,10 @@
           <select class="city" name="city" disabled="disabled"></select>
           <select class="dist" name="district" disabled="disabled"></select>
         </div>
+      </div>
+      <div>
+        <label for="id_jiaxiao">所属驾校:</label>
+        <select id="id_jiaxiao" name="jiaxiaoId"></select>
       </div>
       <p>地址：<input type="text" name="address" class="long_txt" /></p>
       <p>联系人：<input type="text" name="contact" class="long_txt" /></p>

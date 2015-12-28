@@ -64,6 +64,8 @@ app.get('/demo',function(req,res){
 //驾校管理接口
 app.post('/jiaxiao/new', jiaxiaoController.new);
 app.post('/jiaxiao/:id/edit', jiaxiaoController.save);
+app.get('/getJiaxiaoName', jiaxiaoController.getName);
+app.get('/getJiaxiaos', jiaxiaoController.getList);
 app.get('/jiaxiao', jiaxiaoController.index);
 app.get('/jiaxiao/:id', jiaxiaoController.view);
 app.get('/jiaxiao/:id/edit', jiaxiaoController.edit);

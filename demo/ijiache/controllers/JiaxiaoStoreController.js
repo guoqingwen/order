@@ -24,6 +24,7 @@ exports.list = function (req, res, next) {
 
 exports.add = function (req, res, next) {
     var title = req.body.title || '';
+    var jiaxiaoId = req.body.jiaxiaoId || '';
     var city = req.body.city.trim();
     var province = req.body.province.trim();
     var district = req.body.district.trim();
@@ -38,7 +39,7 @@ exports.add = function (req, res, next) {
     if (!title) {
         return res.render('error.html', {message: '名称不能为空'});
     }
-    db.add(title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
+    db.add(jiaxiaoId, title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
         if (err) {
             return next(err);
         }

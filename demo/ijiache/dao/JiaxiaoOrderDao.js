@@ -50,6 +50,36 @@ exports.add = function(classId, date, userId, notice, callback) {
     });
 }
 
+//获取用户报名课程列表
+exports.userOrders = function(userId, callback) {
+    exports.findOneByObj({"orderUsers.userId":userId}, function(err, doc) {
+        if (err)
+            callback(err);
+        else if (doc)
+            callback(null, doc);
+    });
+}
+
+//获取可以报名课程列表
+exports.ordersByDate = function(date, callback) {
+    exports.findOneByObj({"date":date}, callback);
+}
+
+//获取可以报名课程列表
+exports.ordersByClass = function(classId, callback) {
+    exports.findOneByObj({"classId":classId}, callback);
+}
+
+//获取可以报名课程列表
+exports.orders = function(classId, date, callback) {
+    exports.findOneByObj({"classId":classId, "date":date}, callback);
+}
+
+//获取可以报名课程列表
+exports.ordersByDateGap = function(startDate, endDate, callback) {
+    //exports.findOneByObj({"classId":classId, "date":date}, callback);
+}
+
 exports.delete = function(id, callback) {
     exports.findOneById(id, function(err, doc) {
         if (err)
@@ -113,6 +143,7 @@ var findOneById = exports.findOneById = function(id,callback){
 exports.findOneByObj = function(findObj, callback){
     JiaxiaoOrderStore.findOne(findObj,function(err,doc){
         if (err) {
+            util.log('FATAL '+ err);
             callback(err, null);
         }
         callback(null, doc);

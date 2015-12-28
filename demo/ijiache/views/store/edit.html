@@ -12,6 +12,15 @@
                 nodata:"none"
             });
 
+            $.ajax({
+                post:'get',
+                url:'/getJiaoxiaoName&id="<%=todo.jiaxiaoId%>"',
+                data:{},
+                dataType:'json',
+                success:function(data){
+                    $('#id_jiaxiao').css('backgroundColor', 'red').attr('innerHtml', data.title);
+                }
+            });
         });
     </script>
 </head>
@@ -29,6 +38,7 @@
               <select class="dist" name="district" disabled="disabled"></select>
           </div>
       </div>
+      <p>所属驾校：<p id="id_jiaxiao"></p></p>
       <p>地址：<input type="text" name="address" value="<%= todo.address %>" /></p>
       <p>联系人：<input type="text" name="contact" value="<%= todo.contact %>" /></p>
       <p>手机：<input type="text" name="iphone" value="<%= todo.iphone %>" /></p>
