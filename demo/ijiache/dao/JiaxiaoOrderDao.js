@@ -9,33 +9,44 @@ require('date-utils');
 //表示学员报名课程表
 var OrderScheme = new Schema({
     classId:String,//课程id
-    userId:String,//用户id
-    orderDate:{type:Date,default:Date.now},//开始日期
-    notice:String,//说明备注，会通知到管理员
+    orderDate:{type:Date,default:Date.now},//日期
+    orderUsers:[
+        {
+            userId: String,//用户id
+            notice: String,//说明备注，会通知到管理员
+            successed:{type:Boolean,default:false}//表示报名被确认
+        }
+    ]
 });
 
 //访问class对象模型
-mongoose.model('t_jiaxiao_order_store', StoreScheme);
+mongoose.model('t_jiaxiao_order_store', OrderScheme);
 var JiaxiaoOrderStore = mongoose.model('t_jiaxiao_order_store');
 
 //添加报名
-exports.add = function(storeId, title, startTime, endTime, startDate, endDate, allUsed, notice, callback) {
-    var newClass = new JiaxiaoOrderStore();
-    newClass.title = title;
-    newClass.storeId = storeId;
-    newClass.startTime = startTime;
-    newClass.startDate = startDate;
-    newClass.endDate = endDate;
-    newClass.endTime = endTime;
-    newClass.allUsed = allUsed;
-
-    newClass.save(function(err){
-        if(err){
-            util.log("FATAL"+err);
+exports.add = function(classId, date, userId, notice, callback) {
+    exports.findOneByObj({"classId":classId, "date":date}, function(err, doc) {
+        if (err)
             callback(err);
-        }else{
-            callback(null);
+        else if (doc) {
+            doc.orderUsers.push({userId: userId, notice: notice, successed: false});
         }
+        else {
+            var newOrder = new JiaxiaoOrderStore();
+            newOrder.classID = classId;
+            newOrder.orderDate = date;
+            newOrder.orderUsers.push({userId: userId, notice: notice, successed: false});
+
+            doc = newOrder;
+        }
+        doc.save(function (err) {
+            if (err) {
+                util.log("FATAL" + err);
+                callback(err);
+            } else {
+                callback(null);
+            }
+        });
     });
 }
 
@@ -52,18 +63,13 @@ exports.delete = function(id, callback) {
 }
 
 /** 修改信息 */
-exports.editClass = function(id, storeId, title, startTime, endTime, startDate, endDate, allUsed, notice, callback) {
-    exports.findOneById(id, function(err, doc) {
+exports.editOrder = function(classId, date, userId, notice, success, callback) {
+    exports.findOneByObj({"classId":classId, "date":date, "orderUsers.userId":userId}, function(err, doc) {
         if (err)
             callback(err);
-        else {
-            doc.title = title;
-            doc.storeId = storeId;
-            doc.startTime = startTime;
-            doc.startDate = startDate;
-            doc.endDate = endDate;
-            doc.endTime = endTime;
-            doc.allUsed = allUsed;
+        else if (doc){
+            doc.orderUsers[0].notice = notice;
+            doc.orderUsers[0].successed = success;
 
             doc.save(function(err) {
                 if (err) {
@@ -76,42 +82,13 @@ exports.editClass = function(id, storeId, title, startTime, endTime, startDate, 
     });
 }
 
-/** 编缉否禁用该课程 */
-exports.editAvailabled = function(id, availabled, callback) {
-    exports.findOneById(id, function(err, doc) {
-        if (err)
-            callback(err);
-        else {
-            doc.availabled = availabled;
-            doc.save(function(err) {
-                if (err) {
-                    util.log('FATAL '+ err);
-                    callback(err);
-                } else
-                    callback(null);
-            });
-        }
-    });
-}
-
-/** 是否可用 */
-exports.availabled = function(id, callback) {
-    exports.findOneById(id, function(err, doc) {
-        if (err)
-            callback(err);
-        else {
-            callback(null, doc.availabled);
-        }
-    });
-}
-
-/**获取所有门店列表*/
+/**获取列表*/
 exports.allStores = function(callback) {
-    JiaxiaoClassStore.find({}, callback);
+    JiaxiaoOrderStore.find({}, callback);
 }
 
 exports.forAll = function(doEach, done) {
-    JiaxiaoClassStore.find({}, function(err, docs) {
+    JiaxiaoOrderStore.find({}, function(err, docs) {
         if (err) {
             util.log('FATAL '+ err);
             done(err, null);
@@ -124,9 +101,18 @@ exports.forAll = function(doEach, done) {
 }
 
 var findOneById = exports.findOneById = function(id,callback){
-    JiaxiaoClassStore.findOne({_id:id},function(err,doc){
+    JiaxiaoOrderStore.findOne({_id:id},function(err,doc){
         if (err) {
             util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
+
+exports.findOneByObj = function(findObj, callback){
+    JiaxiaoOrderStore.findOne(findObj,function(err,doc){
+        if (err) {
             callback(err, null);
         }
         callback(null, doc);
