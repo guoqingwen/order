@@ -14,11 +14,11 @@
 
             $.ajax({
                 post:'get',
-                url:'/getJiaoxiaoName&id="<%=todo.jiaxiaoId%>"',
+                url:'/getJiaxiaoName?id=<%=todo.jiaxiaoId%>',
                 data:{},
                 dataType:'json',
                 success:function(data){
-                    $('#id_jiaxiao').css('backgroundColor', 'red').attr('innerHtml', data.title);
+                    $('#id_jiaxiao').text(data.title);
                 }
             });
         });
@@ -38,7 +38,7 @@
               <select class="dist" name="district" disabled="disabled"></select>
           </div>
       </div>
-      <p>所属驾校：<p id="id_jiaxiao"></p></p>
+      <div> <label for="id_jiaxiao">所属驾校:</label><p id="id_jiaxiao">ddd</p></div>
       <p>地址：<input type="text" name="address" value="<%= todo.address %>" /></p>
       <p>联系人：<input type="text" name="contact" value="<%= todo.contact %>" /></p>
       <p>手机：<input type="text" name="iphone" value="<%= todo.iphone %>" /></p>

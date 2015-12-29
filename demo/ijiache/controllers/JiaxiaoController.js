@@ -4,7 +4,7 @@ var config = require('../config');
 var db = require('../dao/JiaxiaoDao');
 
 exports.index = function (req, res, next) {
-    db.allTodos(function (err, todos) {
+    db.allJiaxiaos(function (err, todos) {
         if (err) {
             return next(err);
         }
@@ -13,7 +13,7 @@ exports.index = function (req, res, next) {
 };
 
 exports.getName = function (req, res, next) {
-    var jiaxiaoId = req.params.id;
+    var jiaxiaoId = req.query.id;
     db.findTodoById(jiaxiaoId, function (err, todos) {
         if (err) {
             return next(err);
