@@ -12,10 +12,9 @@ exports.userLogin = function (req, res, next) {
 	        return next(err);
 	    }
 	    console.log(doc);
-	    var userObj = {'username':username};
+	    var userObj = {'username':username, isStore:false,test:'test文件'};
         req.session.user = userObj;
         res.redirect('/admin');
-	    //res.render('admin.html');
 	});
 };
 
@@ -28,7 +27,7 @@ exports.userRegister = function (req, res, next) {
 	    if (err) {
 	        return next(err);
 	    }
-        req.session.user = {'username':username};
+        //req.session.user = {'username':username};
 	    res.render('message.html', doc);
 	});
 };
@@ -52,4 +51,52 @@ exports.users = function (req, res, next) {
 	    }
 	    res.json(doc);
 	});
+};
+
+exports.updatePwd = function (req, res, next) {
+	var username = req.body.username;
+	var pwd = req.body.pwd;
+	var newPwd = req.body.newPwd;
+	var newPwdTwo = req.body.newPwdTwo;
+	var message = "";
+
+	if (newPwd == newPwdTwo)
+	{
+		if (newPwd == pwd)
+		{
+			res.render("message.html",{message:"新密码与原密码一致"});
+		}
+		else {
+			db.findUserById(username, function (err, doc) {
+				if (err)
+				{
+					res.render("message.html",{message:"修改密码错误"});
+				}
+				if (doc) {
+					console.log("updatePwd:",doc);
+					if (doc.password == pwd) {
+						doc.password = newPwd;
+						doc.save(function(err) {
+							if (err) {
+								util.log('FATAL '+ err);
+								res.render("message.html",{message:"修改密码错误"});
+							}
+							else
+							{
+								res.render("message.html",{message:"修改密码成功"});
+							}
+						});
+					}
+					else {
+						res.render("message.html",{message:"原密码错误"});
+					}
+				}
+			});
+		}
+	}
+	else
+	{
+		res.render("message.html",{message:"密码两次输入不一致！"});
+	}
+
 };

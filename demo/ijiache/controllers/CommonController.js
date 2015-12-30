@@ -14,9 +14,19 @@ exports.login = function (req, res, next) {
 exports.register = function (req, res, next) {
     res.render('register.html');
 };
+exports.updatePwd = function (req, res, next) {
+    res.render("admin_password.html",{user:req.session.user});
+};
 exports.admin = function (req, res, next) {
     if(req.session.user){
-        res.render('admin.html', {user:req.session.user});
+        if (req.session.user.isStore)//如果门店用户管理员登陆
+        {
+            res.render('admin/admin_store.html', {user:req.session.user});
+        }
+        else
+        {
+            res.render('admin_user.html', {user:req.session.user});
+        }
     } 
     else{
         res.redirect('/login');

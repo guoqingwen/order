@@ -61,6 +61,11 @@ app.get('/demo',function(req,res){
     res.render('demo/index.html');
 });
 
+//用户后台接口
+app.get('/userUpdatePwd', commonController.updatePwd);
+app.get('/userOrderClass', loginController.users);
+
+
 //驾校管理接口
 app.post('/jiaxiao/new', jiaxiaoController.new);
 app.post('/jiaxiao/:id/edit', jiaxiaoController.save);
@@ -86,6 +91,7 @@ app.get('/store/:id/available', storeController.available);
 //define post
 app.post('/user/login', loginController.userLogin);
 app.post('/user/register', loginController.userRegister);
+app.post('/user/updatePwd', loginController.updatePwd);
 
 models.connect(function(error){
     if (error) throw error;

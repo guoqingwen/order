@@ -109,9 +109,14 @@ exports.availabled = function(id, callback) {
     });
 }
 
-/**获取所有门店列表*/
-exports.allStores = function(callback) {
+/**获取所有课程列表*/
+exports.allClass = function(callback) {
     JiaxiaoClassStore.find({}, callback);
+}
+
+/**获取门店发布所有列表*/
+exports.allClassBySotreId = function(storeId, callback) {
+    JiaxiaoClassStore.find({storeId:storeId}, callback);
 }
 
 exports.forAll = function(doEach, done) {

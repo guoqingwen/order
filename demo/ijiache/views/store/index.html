@@ -43,15 +43,13 @@
         var status = todo.availabled ? 'class="finished"' : '';
       %>
         <li <%- status %>>
-          <% if (todo.availabled) { %>
-            <%= todo.title %>
-            &nbsp;
-            <a href="/store/<%- todo._id%>/available?status=no">禁用</a>,
-          <% } else { %>
-            <del><%= todo.title %></del>
-            &nbsp;
-            <a href="/store/<%- todo._id%>/available?status=yes">恢复</a>,
-          <% } %>
+            <% if (todo.availabled) { %>
+              <%= todo.title %>&nbsp;
+              <a href="/store/<%- todo._id%>/available?status=no">禁用</a>,
+            <% } else { %>
+              <del><%= todo.title %></del>&nbsp;
+              <a href="/store/<%- todo._id%>/available?status=yes">恢复</a>,
+            <% } %>
           <a href="/store/<%- todo._id%>/edit">修改</a>,
           <a href="/store/<%- todo._id%>/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
         </li>
