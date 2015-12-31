@@ -2,42 +2,85 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>预约课程</title>
+    <title>预约课程筛选条件</title>
+    <script src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/city/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#id_city_list").citySelect({
+                prov:"<%= condition.province %>",
+                city:"<%= condition.city %>",
+                dist:"<%= condition.district %>",
+                nodata:"none"
+            });
+
+            $("#id_city,#id_prov,#id_dist").change(function(){
+                updateStores($("#id_prov").val(),$("#id_city").val(),$("#id_dist").val(),"");
+            });
+
+            $("#id_jiaxiao").change(function(){
+                updateStores($("#id_prov").val(),$("#id_city").val(),$("#id_dist").val(),$("#id_jiaxiao").val());
+            });
+
+            $.ajax({url:'/getJiaxiaos',
+                    type:'get',
+                    date:{},
+                    dateType:'json',
+                    success:function(data){
+                        var len = data.length;
+                        for (var i = 0 ; i < len; i++){
+                            var obj = data[i];
+                            $("#id_jiaxiao").append('<option value='+obj._id+'>'+obj.title+'</option>');
+                        }
+                     }
+                }
+            );
+            updateStores("<%= condition.province %>","<%= condition.city %>","<%= condition.district %>","");
+            function updateStores(province,city,district,jiaxiao){
+                $.ajax({url:'/getJiaxiaoStores?province='+province+'&city='+city+'&district='+district+'&jiaxiao='+jiaxiao,
+                            type:'get',
+                            date:{},
+                            dateType:'json',
+                            success:function(data){
+                                var len = data.length;
+                                for (var i = 0 ; i < len; i++){
+                                    var obj = data[i];
+                                    $("#id_store").append('<option value='+obj._id+'>'+obj.title+'</option>');
+                                }
+                            }
+                        }
+                );
+            }
+
+        });
+    </script>
 </head>
 <body>
 <div >
-    <h2 >课程列表</h2>
     <p>筛选条件</p>
-    <table border="1">
-        <tr>
-            <td width="100px">课程名称</td>
-            <td width="100px">报名人数</td>
-            <td width="300px">操作</td>
-        </tr>
+    <form action="/user/orderList" method="get">
+        <div>
+            <label for="id_jiaxiao">驾校:</label>
+            <select id="id_jiaxiao" name="jiaxiaoId"></select>
+        </div>
+        <div>
+            <div id="id_city_list">
+                <label for="city">城市:</label>
+                <select id="id_prov" class="prov" name="province"></select>
+                <select id="id_city" class="city" name="city" disabled="disabled"></select>
+                <select id="id_dist" class="dist" name="district" disabled="disabled"></select>
+            </div>
+        </div>
 
-        <%
-        for (var i = 0, len = todos.length; i < len; i++)
-        {
-            var todo = todos[i];
-            var status = todo.availabled ? 'class="finished"' : '';
-        %>
-        <tr>
-            <td>
-            <%= todo.title %>&nbsp;
-            </td>
-            <td> <%= todo.orderNum %> &nbsp;</td>
-            <td>
-                <% if (todo.availabled) { %>
-                    <a href="/admin/class/<%- todo._id%>/available?status=no">禁用</a>,
-                <% } else { %>
-                    <a href="/admin/class/<%- todo._id%>/available?status=yes">恢复</a>,
-                <% } %>
-            <a href="/admin/class/<%- todo._id%>/edit">修改</a>,
-            <a href="/admin/class/<%- todo._id%>/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
-            </td>
-        </tr>
-        <% } %>
-    </table>
+        <div>
+            <label for="id_store">驾校门店:</label>
+            <select id="id_store" name="storeId"></select>
+        </div>
+        <div>
+            <label for="id_date">日期：</label><input id="id_date" name="orderDate" type="date" value="2015-01-01"/>
+        </div>
+        <button value="">查询</button>
+    </form>
 </div>
 </body>
 </html>

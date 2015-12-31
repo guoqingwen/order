@@ -165,5 +165,14 @@ var findStoreByAdmin = exports.findStoreByAdmin = function(admin,callback){
     });
 }
 
+exports.findStoreByObj = function(obj,callback){
+    JiaxiaoStore.findOne(obj,function(err,doc){
+        if (err) {
+            util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
 
 

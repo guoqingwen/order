@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约课程列表</title>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div >
+    <h2>课程列表</h2>
+    <div>
+        <label for="id_date">日期：</label>
+        <button>前一天</button><input id="id_date" name="orderDate" type="date" value="2015-01-01"/><button>后一天</button>
+    </div>
+    <table border="1">
+        <tr>
+            <td width="100px">课程名称</td>
+            <td width="100px">报名人数</td>
+            <td width="300px">操作</td>
+        </tr>
+
+        <%
+        for (var i = 0, len = orders.length; i < len; i++)
+        {
+            var todo = orders[i];
+            var status = todo.availabled ? 'class="finished"' : '';
+        %>
+        <tr>
+            <td>
+            <%= todo.title %>&nbsp;
+            </td>
+            <td> <%= todo.orderNum %> &nbsp;</td>
+            <td>
+                <% if (todo.availabled) { %>
+                    <a href="/admin/class/<%- todo._id%>/available?status=no">禁用</a>,
+                <% } else { %>
+                    <a href="/admin/class/<%- todo._id%>/available?status=yes">恢复</a>,
+                <% } %>
+            <a href="/admin/class/<%- todo._id%>/edit">修改</a>,
+            <a href="/admin/class/<%- todo._id%>/delete" onclick="return confirm('删除以后不能恢复的，确定？')">删除</a>
+            </td>
+        </tr>
+        <% } %>
+    </table>
+</div>
+</body>
+</html>

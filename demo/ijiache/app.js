@@ -8,6 +8,7 @@ var loginController = require('./controllers/LoginController');
 var commonController = require('./controllers/CommonController');
 var jiaxiaoController = require('./controllers/JiaxiaoController');
 var storeController = require('./controllers/JiaxiaoStoreController');
+var orderController = require('./controllers/JiaxiaoOrderController');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -63,7 +64,7 @@ app.get('/demo',function(req,res){
 
 //用户后台接口
 app.get('/userUpdatePwd', commonController.updatePwd);
-app.get('/userOrderClass', loginController.users);
+app.get('/userOrderClass', commonController.orderClass);
 
 
 //驾校管理接口
@@ -71,6 +72,7 @@ app.post('/jiaxiao/new', jiaxiaoController.new);
 app.post('/jiaxiao/:id/edit', jiaxiaoController.save);
 app.get('/getJiaxiaoName', jiaxiaoController.getName);
 app.get('/getJiaxiaos', jiaxiaoController.getList);
+
 app.get('/jiaxiao', jiaxiaoController.index);
 app.get('/jiaxiao/:id', jiaxiaoController.view);
 app.get('/jiaxiao/:id/edit', jiaxiaoController.edit);
@@ -81,7 +83,8 @@ app.get('/jiaxiao/:id/finish', jiaxiaoController.finish);
 app.post('/store/add', storeController.add);
 app.post('/store/:id/edit', storeController.update);
 app.get('/store', storeController.index);
-app.get('/stores', storeController.list);
+app.get('/stores', storeController.getList);
+app.get('/getJiaxiaoStores', storeController.getList);
 app.get('/checkAdmin', storeController.checkAdmin);
 app.get('/store/:id', storeController.view);
 app.get('/store/:id/edit', storeController.edit);
@@ -92,6 +95,7 @@ app.get('/store/:id/available', storeController.available);
 app.post('/user/login', loginController.userLogin);
 app.post('/user/register', loginController.userRegister);
 app.post('/user/updatePwd', loginController.updatePwd);
+app.post('/user/orderList', orderController.index);
 
 models.connect(function(error){
     if (error) throw error;

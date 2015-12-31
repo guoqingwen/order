@@ -13,7 +13,11 @@ exports.index = function (req, res, next) {
 };
 
 //查看门店列表
-exports.list = function (req, res, next) {
+exports.getList = function (req, res, next) {
+    var jiaxiaoId = req.query.jiaxiaoId || '';
+    var city = req.query.city || '';
+    var province = req.query.province || '';
+    var district = req.query.district || '';
     db.allStores(function (err, todos) {
         if (err) {
             return next(err);

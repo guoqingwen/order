@@ -114,6 +114,8 @@ exports.allClass = function(callback) {
     JiaxiaoClassStore.find({}, callback);
 }
 
+
+
 /**获取门店发布所有列表*/
 exports.allClassBySotreId = function(storeId, callback) {
     JiaxiaoClassStore.find({storeId:storeId}, callback);
@@ -142,5 +144,15 @@ var findOneById = exports.findOneById = function(id,callback){
     });
 }
 
+exports.findOneByObj = function(obj,callback){
+    obj = obj || {};
+    JiaxiaoClassStore.findOne(obj,function(err,doc){
+        if (err) {
+            util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
 
 

@@ -15,7 +15,10 @@ exports.register = function (req, res, next) {
     res.render('register.html');
 };
 exports.updatePwd = function (req, res, next) {
-    res.render("admin_password.html",{user:req.session.user});
+    res.render("admin/admin_password.html",{user:req.session.user});
+};
+exports.orderClass = function (req, res, next) {
+    res.render("admin/order_class.html",{user:req.session.user, condition:{province:"广东",city:"深圳",district:"南山区"}, orders:[]});
 };
 exports.admin = function (req, res, next) {
     if(req.session.user){
@@ -25,7 +28,7 @@ exports.admin = function (req, res, next) {
         }
         else
         {
-            res.render('admin_user.html', {user:req.session.user});
+            res.render('admin/admin_user.html', {user:req.session.user});
         }
     } 
     else{
