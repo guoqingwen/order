@@ -17,19 +17,38 @@ exports.index = function (req, res, next) {
             var classOne = list[i];
 
         }
-        res.render('admin/class.html', {todos: todos});
+        res.render('admin/store_class.html', {todos: todos});
     });
 };
 
 //查看门店列表
-exports.list = function (req, res, next) {
+exports.getList = function (req, res, next) {
+    console.log('class get list,', req.session.store.storeId);
+
+    if(req.session.store)
+    {
+        var storeId = req.session.store.storeId;
+        db.findOneByObj({storeId:storeId},function (err, todos) {
+            if (err) {
+                return next(err);
+            }
+            res.render('admin/store_class.html',{todos:todos});
+        });
+    }
+    else
+    {
+        res.render('message.html',{message:"登陆失效，请重新登陆！"});
+    }
+};
+
+exports.adminList = function(req, res, next){
     db.allClass(function (err, todos) {
         if (err) {
             return next(err);
         }
         res.json(todos);
     });
-};
+}
 
 exports.add = function (req, res, next) {
     var title = req.body.title || '';

@@ -2,7 +2,8 @@
 
 var config = require('../config');
 var db = require('../dao/JiaxiaoStoreDao');
-
+var ObjectType = require('../utils/ObjectType');
+var SessionUtils = require('../utils/SessionUtils');
 exports.index = function (req, res, next) {
     db.allStores(function (err, todos) {
         if (err) {
@@ -14,15 +15,29 @@ exports.index = function (req, res, next) {
 
 //查看门店列表
 exports.getList = function (req, res, next) {
-    var jiaxiaoId = req.query.jiaxiaoId || '';
-    var city = req.query.city || '';
-    var province = req.query.province || '';
-    var district = req.query.district || '';
-    db.allStores(function (err, todos) {
+    var jiaxiaoId = req.query.jiaxiaoId;
+    var city = req.query.city || '深圳';
+    var province = req.query.province || '广东';
+    var district = req.query.district || '南山区';
+    var obj = {city: city, province:province, district:district};
+
+    console.log('jiaxiaoId:', jiaxiaoId);
+    if (jiaxiaoId)
+    {
+        obj.jiaxiaoId = jiaxiaoId;
+    }
+    db.findStoreByObj(obj,function (err, todos) {
         if (err) {
             return next(err);
         }
-        res.json(todos);
+        if (ObjectType.isArray(todos))
+        {
+            res.json(todos);
+        }
+        else
+        {
+            res.json([todos]);
+        }
     });
 };
 
@@ -41,13 +56,25 @@ exports.add = function (req, res, next) {
 
     title = title.trim();
     if (!title) {
-        return res.render('error.html', {message: '名称不能为空'});
+        SessionUtils.sessionError(req,'名称不能为空');
+        return res.redirect('/store');
+        //return res.render('error.html', {message: '名称不能为空'});
     }
-    db.add(jiaxiaoId, title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
-        if (err) {
-            return next(err);
+    db.findStoreByAdmin(admin, function(err, doc){
+        if(err){
+            SessionUtils.sessionError(req,'用户名校验出错!');
+            return res.redirect('/store');
         }
-        res.redirect('/store');
+        if (doc){
+            SessionUtils.sessionError(req, '管理员用户名已经存在！');
+            return res.redirect('/store');
+        }
+        db.add(jiaxiaoId, title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
+            if (err) {
+                return next(err);
+            }
+            res.redirect('/store');
+        });
     });
 };
 

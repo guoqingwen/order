@@ -20,7 +20,7 @@ var ClassScheme = new Schema({
 });
 
 //访问class对象模型
-mongoose.model('t_jiaxiao_class_store', StoreScheme);
+mongoose.model('t_jiaxiao_class_store', ClassScheme);
 var JiaxiaoClassStore = mongoose.model('t_jiaxiao_class_store');
 
 exports.add = function(storeId, title, startTime, endTime, startDate, endDate, allUsed, notice, callback) {

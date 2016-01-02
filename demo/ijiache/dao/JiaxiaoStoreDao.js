@@ -57,11 +57,13 @@ exports.delete = function(id, callback) {
     exports.findStoreById(id, function(err, doc) {
         if (err)
             callback(err);
-        else {
+        else if(doc){
             util.log(util.inspect(doc));
             doc.remove();
             callback(null);
         }
+        else
+            callback(null);
     });
 }
 

@@ -9,6 +9,7 @@ var commonController = require('./controllers/CommonController');
 var jiaxiaoController = require('./controllers/JiaxiaoController');
 var storeController = require('./controllers/JiaxiaoStoreController');
 var orderController = require('./controllers/JiaxiaoOrderController');
+var classController = require('./controllers/JiaxiaoClassController');
 var app = express();
 
 app.engine('html', require('ejs').renderFile);
@@ -90,6 +91,11 @@ app.get('/store/:id', storeController.view);
 app.get('/store/:id/edit', storeController.edit);
 app.get('/store/:id/delete', storeController.delete);
 app.get('/store/:id/available', storeController.available);
+
+//门店课程管理接口
+app.get('/store/classAdd', classController.add);
+app.get('/store/classList', classController.getList);
+
 
 //define post
 app.post('/user/login', loginController.userLogin);

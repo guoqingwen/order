@@ -2,6 +2,7 @@
 
 var config = require('../config');
 var db = require('../dao/LoginDao');
+var SessionUtils = require('../utils/SessionUtils');
 
 exports.userLogin = function (req, res, next) {
 	var username = req.body.username || '';
@@ -12,9 +13,21 @@ exports.userLogin = function (req, res, next) {
 	        return next(err);
 	    }
 	    console.log(doc);
-	    var userObj = {'username':username, isStore:false,test:'test文件'};
-        req.session.user = userObj;
-        res.redirect('/admin');
+		var userObj = {'username':username, isStore:false};
+		if(doc.ret == 0)
+		{
+			SessionUtils.sessionError(req, doc.message);
+			res.redirect('/login');
+		}
+		else
+		{
+			if(doc.ret == 2){
+				userObj.isStore = true;
+				req.session.store = {storeId:doc.store.storeId};
+			}
+			req.session.user = userObj;
+			res.redirect('/admin');
+		}
 	});
 };
 

@@ -37,12 +37,13 @@
             );
             updateStores("<%= condition.province %>","<%= condition.city %>","<%= condition.district %>","");
             function updateStores(province,city,district,jiaxiao){
-                $.ajax({url:'/getJiaxiaoStores?province='+province+'&city='+city+'&district='+district+'&jiaxiao='+jiaxiao,
+                $.ajax({url:'/getJiaxiaoStores?province='+province+'&city='+city+'&district='+district+'&jiaxiaoId='+jiaxiao,
                             type:'get',
                             date:{},
                             dateType:'json',
                             success:function(data){
                                 var len = data.length;
+                                $("#id_store").children('option').remove();
                                 for (var i = 0 ; i < len; i++){
                                     var obj = data[i];
                                     $("#id_store").append('<option value='+obj._id+'>'+obj.title+'</option>');

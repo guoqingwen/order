@@ -1,5 +1,6 @@
 var util = require('util');
 var models = require('./models');
+var storeDb = require('../dao/JiaxiaoStoreDao');
 
 var User = models.User;
 
@@ -14,20 +15,35 @@ exports.login = function(username, password, callback) {
 	exports.findUserById(username, function(err, doc) {
         if (err)
             callback(err, {ret:0, message:"login is failed!!"});
-        else {
+        else if(doc){
             util.log(util.inspect(doc));
-            //doc.remove();
-            console.log(doc);
             if (doc.password == password)
             	callback(null, {ret:1, message:"login is success!!"});
             else
-            	callback(err, {ret:0, message:"password is error!"})
+            	callback(err, {ret:0, message:"用户密码错误!!"});
+        }
+        else {
+            storeDb.findStoreByAdmin(username, function (err, admin) {
+                if(err)callback(err, {ret:0, message:"login is failed!!"});
+                else if(admin){
+                    if(admin.adminPwd == password){
+                        callback(null, {ret:2, message:"login is success!!",store:admin});
+                    }
+                    else {
+                        callback(null, {ret:0, message:"用户密码错误!!"});
+                    }
+                }
+                else{
+                    callback(err, {ret:0, message:"用户不存在!!"});
+                }
+            });
         }
     });
 }
 
 //用户注册
 exports.register = function(username, password, email,callback) {
+    //{"$or": [{"name":"stephen1"}, {"age":35}]}
     exports.findEmailById(email, function(err, doc) {
         if (err){
             callback(err, {ret:0, message:"注册失败!!"});
@@ -36,26 +52,37 @@ exports.register = function(username, password, email,callback) {
             callback(err, {ret:0, message:"邮箱已经存在:"+email});
         }
     });
+    //{"$or": [{"name":"stephen1"}, {"age":35}]}
     exports.findUserById(username, function(err, doc) {
         if (err){
             callback(err, {ret:0, message:"注册失败!!"});
         }
         else if(doc){
-            callback(err, {ret:0, message:"用户名已经存在!"})
+            callback(err, {ret:0, message:"用户名已经存在!"});
         }
-        else{
-            var newUser = new User();
-            newUser.username = username;
-            newUser.password = password;
-            newUser.email = email;
-            newUser.save(function(err){
-                if(err){
-                    util.log("FATAL"+err);
-                    callback(err, {ret:1, message:"用户注册失败!"});
-                }else{
-                    console.log('register is success:', username);
-                    callback(null, {ret:1, message:"用户注册成功!"});
-                }
+        else
+        {
+            storeDb.findStoreByAdmin(username, function(err, admin){
+               if(err){
+                   callback(err, {ret:0, message:"注册失败!!"});
+               }else if(admin) {
+                   callback(err, {ret:0, message:"用户名已经存在!"})
+               }
+               else {
+                   var newUser = new User();
+                   newUser.username = username;
+                   newUser.password = password;
+                   newUser.email = email;
+                   newUser.save(function(err){
+                       if(err){
+                           util.log("FATAL"+err);
+                           callback(err, {ret:1, message:"用户注册失败!"});
+                       }else{
+                           console.log('register is success:', username);
+                           callback(null, {ret:1, message:"用户注册成功!"});
+                       }
+                   });
+               }
             });
         }
     });
@@ -102,6 +129,16 @@ var findUserById = exports.findUserById = function(username,callback){
 }
 var findEmailById = exports.findEmailById = function(email,callback){
     User.findOne({email:email},function(err,doc){
+        if (err) {
+            util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
+
+exports.findByObj = function(obj,callback){
+    User.findOne(obj,function(err,doc){
         if (err) {
             util.log('FATAL '+ err);
             callback(err, null);
