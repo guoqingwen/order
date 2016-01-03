@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="/js/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('id_send').click(function(){
+        var username = $('id_email').val();
+        $.ajax({
+              url:'/getVerificationCode?username='+username,
+              type:'get',
+              date:{},
+              dateType:'json',
+              success:function(data){
+                if(data.ret == 1){
+                  alert("验证码已经发送到："+username);
+                }
+                else{
+                  alert("验证码发送失败！请重新再试！");
+                }
+              },
+              error:function(data){
+                alert("验证码发送失败！请重新再试！");
+              }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<div>
+  <h2>验证邮箱</h2>
+  <form action="?" method="post">
+    <input type="hidden" name="id" value="<%= id %>">
+    <table>
+      <tr>
+        <td><p>邮箱：</p></td>
+        <td><input type="text" id="id_email" name="email" value="<%= email %>" /></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><p>验证码：</p></td>
+        <td><input type="text" name="verificationCode" /></td>
+        <td><button id="id_send">发送</button></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" class="submit" value="确定" /></td>
+        <td></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div>
+  <p class="font-color:red"><%=errmsg%></p>
+</div>
+</body>
+</html>

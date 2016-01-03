@@ -20,11 +20,32 @@ exports.updatePwd = function (req, res, next) {
 exports.orderClass = function (req, res, next) {
     res.render("admin/order_class.html",{user:req.session.user, condition:{province:"广东",city:"深圳",district:"南山区"}, orders:[]});
 };
+exports.classAdd = function (req, res, next) {
+    res.render("admin/add_class.html",{user:req.session.user, store:req.session.store, condition:{province:"广东",city:"深圳",district:"南山区"}});
+};
+exports.checkEmail = function (req, res, next) {
+    var email = req.query.email;
+    var id = req.query.id;
+    res.render('admin/check_email.html',{email:email, id:id});
+};
+
+exports.checkIphone = function (req, res, next) {
+    var iphone = req.query.iphone;
+    var id = req.query.id;
+    res.render('admin/check_iphone.html',{iphone:iphone, id:id});
+};
+
+exports.getVerificationCode = function (req, res, next) {
+    var iphone = req.query.username;
+
+    res.render('admin/check_iphone.html',{iphone:iphone, id:id});
+};
+
 exports.admin = function (req, res, next) {
     if(req.session.user){
         if (req.session.user.isStore)//如果门店用户管理员登陆
         {
-            res.render('admin/admin_store.html', {user:req.session.user});
+            res.render('admin/admin_store.html', {user:req.session.user,store:req.session.store});
         }
         else
         {

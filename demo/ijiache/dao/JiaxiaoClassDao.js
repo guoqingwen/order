@@ -23,7 +23,7 @@ var ClassScheme = new Schema({
 mongoose.model('t_jiaxiao_class_store', ClassScheme);
 var JiaxiaoClassStore = mongoose.model('t_jiaxiao_class_store');
 
-exports.add = function(storeId, title, startTime, endTime, startDate, endDate, allUsed, notice, callback) {
+exports.add = function(storeId, title, startTime, endTime, startDate, endDate, allUsed, callback) {
     var newClass = new JiaxiaoClassStore();
     newClass.title = title;
     newClass.storeId = storeId;
@@ -146,7 +146,7 @@ var findOneById = exports.findOneById = function(id,callback){
 
 exports.findOneByObj = function(obj,callback){
     obj = obj || {};
-    JiaxiaoClassStore.findOne(obj,function(err,doc){
+    JiaxiaoClassStore.find(obj,function(err,doc){
         if (err) {
             util.log('FATAL '+ err);
             callback(err, null);

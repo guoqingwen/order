@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>预约课程筛选条件</title>
     <script src="/js/jquery.min.js"></script>
+    <script src="/js/utils.js"></script>
     <script type="text/javascript" src="/js/city/jquery.cityselect.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -13,6 +14,8 @@
                 dist:"<%= condition.district %>",
                 nodata:"none"
             });
+            //alert(new Date().format("yyyy-MM-dd"));
+            $("#id_date").attr('value', new Date().format("yyyy-MM-dd"));
 
             $("#id_city,#id_prov,#id_dist").change(function(){
                 updateStores($("#id_prov").val(),$("#id_city").val(),$("#id_dist").val(),"");
@@ -78,7 +81,7 @@
             <select id="id_store" name="storeId"></select>
         </div>
         <div>
-            <label for="id_date">日期：</label><input id="id_date" name="orderDate" type="date" value="2015-01-01"/>
+            <label for="id_date">日期：</label><input id="id_date" name="orderDate" type="date" />
         </div>
         <button value="">查询</button>
     </form>

@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>预约课程列表</title>
+    <title>用户预约课程列表</title>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/utils.js"></script>
     <script>
+
         $(document).ready(function(){
-            $("#id_date").attr('value',getQueryString("orderDate"));
-            $("#id_pre").click(function(){
+            /*$("#id_pre").click(function(){
                 var current = new Date($("#id_date").val());
                 var pre = new Date(current.getTime()-24*60*60*1000).format("yyyy-MM-dd");
                 var newUrl = setQueryString("orderDate",pre);
@@ -19,24 +19,22 @@
                 var next = new Date(day.getTime()+24*60*60*1000).format("yyyy-MM-dd");
                 var newUrl = setQueryString("orderDate",next);
                 refresh(newUrl);
-            });
+            });*/
         });
     </script>
 </head>
 <body>
 <div >
-    <h2>课程列表</h2>
-    <div>
-        <label for="id_date">日期：</label>
-        <button id="id_pre">前一天</button><input id="id_date" name="orderDate" type="date" value="<%=orderDate%>"/><button id="id_next">后一天</button>
-    </div>
+    <h2>用户预约课程列表</h2>
     <br>
     <table border="1">
         <tr>
             <td width="300px">课程名称</td>
+            <td width="100px">日期</td>
             <td width="100px">开始时间</td>
             <td width="100px">结束时间</td>
             <td width="100px">报名人数</td>
+            <td width="100px">确定人数</td>
             <td width="300px">操作</td>
         </tr>
 
@@ -46,15 +44,15 @@
             var todo = orders[i];
         %>
         <tr>
-            <td>
-            <%= todo.title %>&nbsp;
-            </td>
+            <td> <%= todo.title %>&nbsp;</td>
+            <td> <%= todo.orderDate %>&nbsp;</td>
             <td> <%= todo.startTime %> &nbsp;</td>
             <td> <%= todo.endTime %> &nbsp;</td>
             <td> <%= todo.orderNum %> &nbsp;</td>
+            <td> <%= todo.successNum %> &nbsp;</td>
+
             <td>
-            <a href="/store_order/<%- todo._id%>/add?orderDate=<%=orderDate%>">报名</a>,
-            <a href="/store_order/<%- todo._id%>/delete">取消</a>
+            <a href="/store_order/<%- todo._id%>/edit?title=<%= todo.title %>&startTime=<%= todo.startTime %>&endTime=<%= todo.endTime %>">编辑</a>
             </td>
         </tr>
         <% } %>

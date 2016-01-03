@@ -5,11 +5,13 @@
   </head>
   <body>
    <h1>Hello IjiaChe</h1>
-   <p >
+   <label>
     <%= user.username %>
-    </p><a href="/logout">退出</a><br>
-    <a href="/store/classAdd">发布课程</a>
-    <a href="/store/classList">课程列表</a>
-
+    </label><a href="/logout">退出</a><br>
+    <p>门店:<strong><%=store.title%></strong></p>
+    <p>账户有效期:<strong><%=store.availabled_date%></strong></p>
+    <a href="/store_class_add">发布课程</a>
+    <a href="/store_class_list">课程列表</a>
+    <a href="/store_order_list">报名列表</a>
   </body>
 </html>

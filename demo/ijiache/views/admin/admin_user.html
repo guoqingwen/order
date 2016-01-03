@@ -5,9 +5,9 @@
   </head>
   <body>
    <h1>Hello IjiaChe</h1>
-   <label><%= user.username %> </label><a href="/logout">个人中心</a>&nbsp;<a href="/userUpdatePwd">修改密码</a>&nbsp;<a href="/logout"> 退出</a><br><br>
+   <label><%= user.username %> </label><a href="/user/<%- user.userId%>/edit">个人中心</a>&nbsp;<a href="/userUpdatePwd">修改密码</a>&nbsp;<a href="/logout"> 退出</a><br><br>
 
     <a href="/userOrderClass">报 名</a>&nbsp;
-    <a href="/userOrderClass">我的课程</a>
+    <a href="/userOrderList">我的课程</a>
   </body>
 </html>

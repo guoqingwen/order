@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script>
+        $(document).ready(function(){
+
+        });
+    </script>
+</head>
+<body>
+<div >
+    <h2>用户信息</h2>
+    <br>
+    <form action="?" method="post">
+    <table border="1">
+        <tr>
+            <td>用户名：</td>
+            <td><strong><%= todo.username %></strong> </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>真实名字：</td>
+            <td> <input type="text" value="<%= todo.name %>" name="name"/></td><td>
+        </td>
+        </tr>
+        <tr>
+            <td>手机：</td>
+            <td> <input type="text" value="<%= todo.iphone %>" name="iphone"/></td>
+            <td>
+                <%if(todo.checkIphone){%>
+                <strong>已验证</strong>
+                <% }else {%>
+                <a href="/userCheckIphone?iphone=<%= todo.iphone %>&id=<%= todo._id %>">验证手机</a>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td>邮箱：</td>
+            <td><input type="text" value="<%= todo.email %>" name="email"/> </td>
+            <td>
+                <%if(todo.checkEmail){%>
+                    <strong>已验证</strong>
+                <% }else {%>
+                    <a href="/userCheckEmail?email=<%= todo.email %>&id=<%= todo._id %>">验证邮箱</a>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td>微信：</td><td id="id_orderNum"> <%= todo.checkWeixin?"是":"否" %> &nbsp;</td><td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="确定"/></a>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div class="font-color:red;"><%=errmsg%></div>
+</body>
+</html>

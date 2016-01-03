@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户预约课程</title>
+    <script src="/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input:checkbox').change(function () {
+                var successNum = parseInt($('#id_successNum').html());
+                if($(this).is(':checked')) {
+                    successNum++;
+                    if(successNum <= parseInt($('#id_orderNum').html())){
+                        $('#id_successNum').html(successNum);
+                    }
+                }
+                else{
+                    successNum--;
+                    if(successNum >= 0){
+                        $('#id_successNum').html(successNum);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div >
+    <h2>编辑用户预约</h2>
+    <br>
+    <form action="?" method="post">
+    <table border="1">
+        <tr>
+            <td>课程名称：</td><td> <%= todo.title %></td>
+        </tr>
+        <tr>
+            <td>日期：</td><td> <%= todo.orderDateStr %></td>
+        </tr>
+        <tr>
+            <td>开始时间：</td><td> <%= todo.startTime %></td>
+        </tr>
+        <tr>
+            <td>开始时间：</td><td><%= todo.endTime %></td>
+        </tr>
+        <tr>
+            <td>报名人数：</td><td id="id_orderNum"> <%= todo.orderNum %></td>
+        </tr>
+        <tr>
+            <td>确定人数：</td><td id="id_successNum"> <%= todo.successNum %></td>
+        </tr>
+        <tr>
+            <td>选择：</td>
+            <td>
+                <%
+                    for (var i = 0, len = todo.orderUsers.length; i < len; i++)
+                    {
+                        var userDo = todo.orderUsers[i];
+                    %>
+                    <label><input name="<%=userDo.userId%>" type="checkbox" value="1" checked="<%=userDo.successed?'true':'false'%>"  /><%=userDo.name%> </label>
+                <%}%>
+            </td>
+        </tr>
+        <tr>
+            <td>备注：</td>
+            <td>
+                <textarea name="notice" placeholder="备注会通知到每个学员"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="确定" /></a>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div class="font-color:red;"><%=errmsg%></div>
+</body>
+</html>

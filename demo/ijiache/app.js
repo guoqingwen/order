@@ -64,9 +64,15 @@ app.get('/demo',function(req,res){
 });
 
 //用户后台接口
+app.get('/getVerificationCode', commonController.getVerificationCode);
 app.get('/userUpdatePwd', commonController.updatePwd);
 app.get('/userOrderClass', commonController.orderClass);
-
+app.get('/userOrderList', orderController.userOrderList);
+app.get('/store_order_list', orderController.adminOrderList);
+app.get('/userCheckEmail', commonController.checkEmail);
+app.get('/userCheckIphone', commonController.checkIphone);
+app.post('/user_bind_iphone', loginController.bindIphone);
+app.post('/user_bind_email', loginController.bindEmail);
 
 //驾校管理接口
 app.post('/jiaxiao/new', jiaxiaoController.new);
@@ -93,15 +99,25 @@ app.get('/store/:id/delete', storeController.delete);
 app.get('/store/:id/available', storeController.available);
 
 //门店课程管理接口
-app.get('/store/classAdd', classController.add);
-app.get('/store/classList', classController.getList);
-
+app.get('/store_class_add', commonController.classAdd);
+app.get('/store_class_list', classController.getClassList);
+app.get('/classes', classController.adminList);
+app.get('/orders', orderController.getList);
 
 //define post
 app.post('/user/login', loginController.userLogin);
 app.post('/user/register', loginController.userRegister);
 app.post('/user/updatePwd', loginController.updatePwd);
 app.post('/user/orderList', orderController.index);
+app.post('/user/:id/edit', loginController.save);
+app.get('/user/:id/edit', loginController.edit);
+app.get('/user/orderList', orderController.index);
+app.post('/user/orderAdd', orderController.add);
+app.get('/store_order/:id/add', orderController.addHtml);
+app.get('/store_order/:id/delete', orderController.delete);
+app.get('/store_order/:id/edit', orderController.edit);
+//admin
+app.post('/admin/classAdd', classController.add);
 
 models.connect(function(error){
     if (error) throw error;

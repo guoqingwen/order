@@ -4,6 +4,8 @@ var config = require('../config');
 var db = require('../dao/LoginDao');
 var SessionUtils = require('../utils/SessionUtils');
 
+require('date-utils');
+
 exports.userLogin = function (req, res, next) {
 	var username = req.body.username || '';
 	var password = req.body.password || '';
@@ -12,8 +14,8 @@ exports.userLogin = function (req, res, next) {
 	    if (err) {
 	        return next(err);
 	    }
-	    console.log(doc);
-		var userObj = {'username':username, isStore:false};
+	    //console.log(doc);
+		var userObj = {'username':username, isStore:false,test:'test'};
 		if(doc.ret == 0)
 		{
 			SessionUtils.sessionError(req, doc.message);
@@ -23,7 +25,15 @@ exports.userLogin = function (req, res, next) {
 		{
 			if(doc.ret == 2){
 				userObj.isStore = true;
-				req.session.store = {storeId:doc.store.storeId};
+				req.session.store = {
+					storeId:doc.store._id,
+					title:doc.store.title,
+					availabled_date:doc.store.availabled_date.toFormat("YYYY-MM-DD")
+				};
+				console.log("管理员登陆成功，", req.session.store);
+			}
+			else if(doc.ret == 1){
+				userObj.userId = doc.user._id;
 			}
 			req.session.user = userObj;
 			res.redirect('/admin');
@@ -63,6 +73,35 @@ exports.users = function (req, res, next) {
 	        return next(err);
 	    }
 	    res.json(doc);
+	});
+};
+
+exports.edit = function (req, res, next) {
+	var userId = req.params.id;
+	db.findByObj({_id:userId}, function (err, doc) {
+		if (err) {
+			return next(err);
+		}
+		//console.log("edit:", doc);
+		res.render("admin/admin_user_info.html",{todo:doc});
+	});
+};
+
+exports.save = function (req, res, next) {
+	var userId = req.params.id;
+	db.findByObj({_id:userId}, function (err, doc) {
+		if (err) {
+			return next(err);
+		}
+		doc.iphone = req.body.iphone;
+		doc.email = req.body.email;
+		doc.name = req.body.name;
+		doc.save(function(err){
+			if(err){
+				req.session.errmsg = "修改个人信息失败";
+			}
+			res.redirect("/user/"+doc._id+"/edit");
+		});
 	});
 };
 

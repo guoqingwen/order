@@ -2,37 +2,22 @@
 
 var db = require('../dao/JiaxiaoClassDao');
 var storeDb = require('../dao/JiaxiaoStoreDao');
+var ObjectType = require('../utils/ObjectType');
+var SessionUtils = require('../utils/SessionUtils');
 
-exports.index = function (req, res, next) {
-    var storeId = req.session.storeId;
-    db.allClassBySotreId(storeId, function (err, list) {
-        if (err) {
-            return next(err);
-        }
+require('date-utils');
 
-        var todos = [];
-
-        for (var i = list.length; i >= 0; i--){
-            var one = {};
-            var classOne = list[i];
-
-        }
-        res.render('admin/store_class.html', {todos: todos});
-    });
-};
-
-//查看门店列表
-exports.getList = function (req, res, next) {
-    console.log('class get list,', req.session.store.storeId);
+//查看列表
+exports.getClassList = function (req, res, next) {
 
     if(req.session.store)
     {
         var storeId = req.session.store.storeId;
-        db.findOneByObj({storeId:storeId},function (err, todos) {
+        db.findOneByObj({storeId:storeId},function (err, doc) {
             if (err) {
                 return next(err);
             }
-            res.render('admin/store_class.html',{todos:todos});
+            res.render('admin/store_class.html',{todos:doc});
         });
     }
     else
@@ -50,28 +35,29 @@ exports.adminList = function(req, res, next){
     });
 }
 
+//store_class_add
 exports.add = function (req, res, next) {
-    var title = req.body.title || '';
-    var jiaxiaoId = req.body.jiaxiaoId || '';
-    var city = req.body.city.trim();
-    var province = req.body.province.trim();
-    var district = req.body.district.trim();
-    var address = req.body.address.trim();
-    var contact = req.body.contact.trim();
-    var iphone = req.body.iphone.trim();
-    var telephone = req.body.telephone.trim();
-    var admin = req.body.admin.trim();
-    var adminPwd = req.body.adminPwd.trim();
+    var title = req.body.title;
+    var storeId = req.body.storeId;
+    var startDate = new Date(req.body.startDate);
+    var endDate = new Date(req.body.endDate);
+    var startTime = new Date(req.body.startDate+' '+req.body.startTime+':00');
+    var endTime = new Date(req.body.startDate+' '+req.body.endTime+':00');
+    var allUsed = req.body.allUsed == 1;
+    //console.log(title, storeId, allUsed);
 
     title = title.trim();
     if (!title) {
-        return res.render('error.html', {message: '名称不能为空'});
+        SessionUtils.sessionError(req, '名称不能为空');
+        res.redirect('/store_class_add');
+        return;
     }
-    db.add(jiaxiaoId, title, province, city,district, address, contact, iphone, telephone, admin, adminPwd, function (err, row) {
+
+    db.add(storeId, title, startTime, endTime, startDate, endDate, allUsed, function (err, row) {
         if (err) {
             return next(err);
         }
-        res.redirect('/store');
+        res.redirect('/store_class_list');
     });
 };
 

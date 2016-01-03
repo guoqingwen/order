@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>报名课程</title>
+    <script src="/js/jquery.min.js"></script>
+</head>
+<body>
+<div >
+    <p>报名课程</p>
+    <form action="/user/orderAdd" method="post">
+        <div>
+            <input type="hidden" name="classId" value="<%=classId%>">
+            <input type="hidden" name="orderDate" value="<%=orderDate%>">
+        </div>
+        <div>
+            <label for="id_title">课程标题：</label><strong id="id_title"><%=classData.title%></strong>
+        </div>
+        <div>
+            <label for="id_start_date">日期：</label><strong id="id_start_date"><%=orderDate%></strong>
+        </div>
+        <div>
+            <label for="id_start_time">开始时间：</label><strong id="id_start_time"><%=classData.startTime%></strong>
+        </div>
+        <div>
+            <label for="id_end_time">结束时间：</label><strong id="id_end_time"><%=classData.endTime%></strong>
+        </div>
+        <div>
+            <label for="id_notice">备注：</label><textarea id="id_notice" name="notice" placeholder="将发送给管理员..."></textarea>
+        </div>
+        <input type="submit" value="添加">
+    </form>
+</div>
+<div><%=errmsg%></div>
+</body>
+</html>

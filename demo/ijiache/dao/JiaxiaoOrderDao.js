@@ -25,15 +25,25 @@ var JiaxiaoOrderStore = mongoose.model('t_jiaxiao_order_store');
 
 //添加报名
 exports.add = function(classId, date, userId, notice, callback) {
-    exports.findOneByObj({"classId":classId, "date":date}, function(err, doc) {
+
+    exports.findOneByObj({"classId":classId, "orderDate":date}, function(err, doc) {
         if (err)
             callback(err);
-        else if (doc) {
-            doc.orderUsers.push({userId: userId, notice: notice, successed: false});
+        else if (doc.length > 0) {
+            var hased = false;
+            for(var i = doc.orderUsers.length - 1; i >= 0; i--){
+                if(doc.orderUsers[i].userId == userId){
+                    hased = true;
+                    break;
+                }
+            }
+            if(!hased){
+                doc.orderUsers.push({userId: userId, notice: notice, successed: false});
+            }
         }
         else {
             var newOrder = new JiaxiaoOrderStore();
-            newOrder.classID = classId;
+            newOrder.classId = classId;
             newOrder.orderDate = date;
             newOrder.orderUsers.push({userId: userId, notice: notice, successed: false});
 
@@ -80,14 +90,27 @@ exports.ordersByDateGap = function(startDate, endDate, callback) {
     //exports.findOneByObj({"classId":classId, "date":date}, callback);
 }
 
-exports.delete = function(id, callback) {
+exports.delete = function(id, userId, callback) {
     exports.findOneById(id, function(err, doc) {
-        if (err)
+        if (err || !doc)
             callback(err);
-        else {
+        else if(doc){
             util.log(util.inspect(doc));
-            doc.remove();
-            callback(null);
+            for(var i = doc.orderUsers.length - 1;i>=0;i--){
+                if(doc.orderUsers[i].userId == userId){
+                    doc.orderUsers.splice(i, 1);
+                    break;
+                }
+            }
+            if(doc.orderUsers.length == 0){
+                doc.remove();
+                callback(null);
+            }
+            else{
+                doc.save(function(err){
+                    callback(err,null);
+                });
+            }
         }
     });
 }
@@ -113,7 +136,7 @@ exports.editOrder = function(classId, date, userId, notice, success, callback) {
 }
 
 /**获取列表*/
-exports.allStores = function(callback) {
+exports.allOrders = function(callback) {
     JiaxiaoOrderStore.find({}, callback);
 }
 
@@ -141,7 +164,7 @@ var findOneById = exports.findOneById = function(id,callback){
 }
 
 exports.findOneByObj = function(findObj, callback){
-    JiaxiaoOrderStore.findOne(findObj,function(err,doc){
+    JiaxiaoOrderStore.find(findObj,function(err,doc){
         if (err) {
             util.log('FATAL '+ err);
             callback(err, null);

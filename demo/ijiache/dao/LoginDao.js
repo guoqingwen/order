@@ -18,7 +18,7 @@ exports.login = function(username, password, callback) {
         else if(doc){
             util.log(util.inspect(doc));
             if (doc.password == password)
-            	callback(null, {ret:1, message:"login is success!!"});
+            	callback(null, {ret:1, message:"login is success!!",user:doc});
             else
             	callback(err, {ret:0, message:"用户密码错误!!"});
         }
@@ -27,7 +27,7 @@ exports.login = function(username, password, callback) {
                 if(err)callback(err, {ret:0, message:"login is failed!!"});
                 else if(admin){
                     if(admin.adminPwd == password){
-                        callback(null, {ret:2, message:"login is success!!",store:admin});
+                        callback(null, {ret:2, message:"login is success!!",store:admin, id:admin._id});
                     }
                     else {
                         callback(null, {ret:0, message:"用户密码错误!!"});
