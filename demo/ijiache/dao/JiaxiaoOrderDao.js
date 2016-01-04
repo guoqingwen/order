@@ -13,10 +13,12 @@ var OrderScheme = new Schema({
     orderUsers:[
         {
             userId: String,//用户id
+            userSuccessed: {type:Boolean,default:false},//用户确认,通知管理员
             notice: String,//说明备注，会通知到管理员
             successed:{type:Boolean,default:false}//表示报名被确认
         }
-    ]
+    ],
+    orderNotice:String//管理员确认备注，会通知到每个学员
 });
 
 //访问class对象模型
@@ -88,31 +90,6 @@ exports.orders = function(classId, date, callback) {
 //获取可以报名课程列表
 exports.ordersByDateGap = function(startDate, endDate, callback) {
     //exports.findOneByObj({"classId":classId, "date":date}, callback);
-}
-
-exports.delete = function(id, userId, callback) {
-    exports.findOneById(id, function(err, doc) {
-        if (err || !doc)
-            callback(err);
-        else if(doc){
-            util.log(util.inspect(doc));
-            for(var i = doc.orderUsers.length - 1;i>=0;i--){
-                if(doc.orderUsers[i].userId == userId){
-                    doc.orderUsers.splice(i, 1);
-                    break;
-                }
-            }
-            if(doc.orderUsers.length == 0){
-                doc.remove();
-                callback(null);
-            }
-            else{
-                doc.save(function(err){
-                    callback(err,null);
-                });
-            }
-        }
-    });
 }
 
 /** 修改信息 */

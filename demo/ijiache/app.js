@@ -115,7 +115,9 @@ app.get('/user/orderList', orderController.index);
 app.post('/user/orderAdd', orderController.add);
 app.get('/store_order/:id/add', orderController.addHtml);
 app.get('/store_order/:id/delete', orderController.delete);
+app.get('/store_order/:id/enter', orderController.userEnter);
 app.get('/store_order/:id/edit', orderController.edit);
+app.post('/store_order/:id/edit', orderController.save);
 //admin
 app.post('/admin/classAdd', classController.add);
 

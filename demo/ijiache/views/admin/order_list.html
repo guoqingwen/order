@@ -47,10 +47,17 @@
             <td> <%= todo.orderDate %>&nbsp;</td>
             <td> <%= todo.startTime %> &nbsp;</td>
             <td> <%= todo.endTime %> &nbsp;</td>
-            <td> <%= todo.successed?'是':'否' %> &nbsp;</td>
+            <td> <%= todo.successed?'是:'+todo.orderNotice:'否' %> &nbsp;</td>
             <td> <%= todo.notice %> &nbsp;</td>
             <td>
-            <a href="/store_order/<%- todo._id%>/delete">取消</a>
+                <a href="/store_order/<%- todo._id%>/delete" onclick="return confirm('取消后不能恢复的，确定？')">取消</a>&nbsp;
+                <%
+                    if(todo.userSuccessed){
+                %>
+                    <strong>已确认</strong>
+                <%}else{%>
+                <a href="/store_order/<%- todo._id%>/enter">确认</a>&nbsp;
+                <%}%>
             </td>
         </tr>
         <% } %>

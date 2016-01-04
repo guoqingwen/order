@@ -33,8 +33,9 @@
             <td width="100px">日期</td>
             <td width="100px">开始时间</td>
             <td width="100px">结束时间</td>
-            <td width="100px">报名人数</td>
-            <td width="100px">确定人数</td>
+            <td width="50px">已报名</td>
+            <td width="50px">已选择</td>
+            <td width="50px">已确认</td>
             <td width="300px">操作</td>
         </tr>
 
@@ -48,8 +49,9 @@
             <td> <%= todo.orderDate %>&nbsp;</td>
             <td> <%= todo.startTime %> &nbsp;</td>
             <td> <%= todo.endTime %> &nbsp;</td>
-            <td> <%= todo.orderNum %> &nbsp;</td>
-            <td> <%= todo.successNum %> &nbsp;</td>
+            <td> <%= todo.orderNum %>人 &nbsp;</td>
+            <td> <%= todo.successNum %>人 &nbsp;</td>
+            <td> <%= todo.enterNum %>人 &nbsp;</td>
 
             <td>
             <a href="/store_order/<%- todo._id%>/edit?title=<%= todo.title %>&startTime=<%= todo.startTime %>&endTime=<%= todo.endTime %>">编辑</a>

@@ -29,6 +29,10 @@
     <h2>编辑用户预约</h2>
     <br>
     <form action="?" method="post">
+    <input type="hidden" name="title" value="<%= todo.title %>"/>
+    <input type="hidden" name="orderDate" value="<%= todo.orderDateStr %>"/>
+    <input type="hidden" name="startTime" value="<%= todo.startTime %>"/>
+    <input type="hidden" name="endTime" value="<%= todo.endTime %>"/>
     <table border="1">
         <tr>
             <td>课程名称：</td><td> <%= todo.title %></td>
@@ -56,14 +60,14 @@
                     {
                         var userDo = todo.orderUsers[i];
                     %>
-                    <label><input name="<%=userDo.userId%>" type="checkbox" value="1" checked="<%=userDo.successed?'true':'false'%>"  /><%=userDo.name%> </label>
+                    <label><input name="<%=userDo.userId%>" type="checkbox" value="1" <%=userDo.successed?'checked':''%>  /><%=userDo.name%> </label>
                 <%}%>
             </td>
         </tr>
         <tr>
             <td>备注：</td>
             <td>
-                <textarea name="notice" placeholder="备注会通知到每个学员"></textarea>
+                <textarea name="notice" placeholder="备注会通知到每个学员"><%=todo.orderNotice%></textarea>
             </td>
         </tr>
         <tr>

@@ -1,5 +1,6 @@
 "use strict";
 
+var NoticeController = require('../controllers/NoticeController');
 var db = require('../dao/JiaxiaoOrderDao');
 var userDb = require('../dao/LoginDao');
 var classDb = require('../dao/JiaxiaoClassDao');
@@ -69,6 +70,7 @@ exports.userOrderList = function (req, res, next) {
         {
             var order = {};
             var todo = todos[i];
+            order.orderNotice = todo.orderNotice;
             order.orderDate = dateUtils.dateToYearStr(todo.orderDate);
             order._id = todo._id;
             var userObj = {};
@@ -89,6 +91,7 @@ exports.userOrderList = function (req, res, next) {
             order.userId = userId;
             order.notice = userObj.notice;
             order.successed = userObj.successed;
+            order.userSuccessed = userObj.userSuccessed;
             orders.push(order);
         }
         //res.render('admin/order_list.html', {orders: orders});
@@ -127,14 +130,19 @@ exports.adminOrderList = function (req, res, next) {
                     classNum--;
                     if(hasData){
                         var users = order.orderUsers;
-                        var successNum = 0;
+                        var successNum = 0;//被勾选的
+                        var enterNum = 0;//用户确认的
                         for(var i = users.length - 1; i >= 0; i--){
                             var userObj = users[i];
                             if(userObj.successed){
                                 successNum++;
                             }
+                            if(userObj.userSuccessed){
+                                enterNum++;
+                            }
                         }
                         order.successNum = successNum;
+                        order.enterNum = enterNum;
                         order.orderNum = order.orderUsers.length;
                         orders.push(order);
                     }
@@ -244,61 +252,128 @@ exports.edit = function (req, res, next) {
     });
 };
 
+//http://localhost:4000/store_order/568802d652a049681aa1df16/edit?title=%E4%B8%8A%E5%8D%88%E7%A7%91%E7%9B%AE%E4%BA%8C%E7%BB%83%E4%B9%A0&startTime=08:00:00&endTime=09:00:00
 exports.save = function (req, res, next) {
     var id = req.params.id;
-    var title = req.body.title || '';
-    title = title.trim();
-    if (!title) {
-        return res.render('error.html', {message: '名称不能为空'});
-    }
-    db.editTitle(id,title,function (err, result) {
-        if (err) {
-            return next(err);
+    var notice = req.body.notice;
+    var title = req.body.title;
+    var orderDate = req.body.orderDate;
+    var startTime = req.body.startTime;
+    var endTime = req.body.endTime;
+    //console.log(req.body);
+    orderDb.findOneById(id, function (err, doc) {
+        if(err || !doc){
+            res.render('error.html',{message:'提交出错，请重试'});
         }
-        res.redirect('/jiaxiao');
+        else{
+            doc.orderNotice = notice;
+
+            NoticeController.clearNotice();
+
+            for(var i = doc.orderUsers.length - 1;i >= 0; i--){
+                var userObj = doc.orderUsers[i];
+                if(req.body[userObj.userId] == 1){//勾选的(
+                    userObj.successed = true;
+                    NoticeController.addOrderEnterNotice(
+                        userObj.userId,title,orderDate,startTime,endTime,notice
+                    );
+                }else if(userObj.successed){//被取消的
+                    userObj.successed = false;
+                    NoticeController.addOrderCancalNotice(
+                        userObj.userId,title,orderDate,startTime,endTime,notice
+                    );
+                }
+            }
+            doc.save(function(err){
+                if(err){
+                    res.render('error.html',{message:'提交出错，请重试'})
+                }
+                else{
+                    NoticeController.sendNotice();
+                    res.redirect('/store_order_list');
+                }
+            });
+        }
     });
 };
 
-//删除报名
+//用户取消报名
 exports.delete = function (req, res, next) {
+    if(!req.session.user)res.redirect('/login');
+
     var id = req.params.id;
     var userId = req.session.user.userId;
-    if (userId){
-        console.log('order delete:',userId, id);
-        db.delete(id, userId, function (err) {
-            if (err) {
-                req.session.errmsg = '删除失败';
-            }
+    console.log('order delete:',userId, id);
+    db.findOneById(id, function(err, doc) {
+        if (err || !doc) {
+            req.session.errmsg = '删除失败,请重试！';
             res.redirect('/userOrderList');
-        });
-    }
-    else{
-        req.session.errmsg = '删除失败';
-        res.redirect('/userOrderList');
-    }
-};
-
-exports.finish = function (req, res, next) {
-    var finished = req.query.status === 'yes' ? true : false;
-    var id = req.params.id;
-    db.editFinished(id,finished, function (err, result) {
-        if (err) {
-            return next(err);
         }
-        res.redirect('/jiaxiao');
+        var classId = doc.classId;
+        var orderDate = doc.orderDate;
+
+        for(var i = doc.orderUsers.length - 1;i>=0;i--){
+            if(doc.orderUsers[i].userId == userId){
+                doc.orderUsers.splice(i, 1);
+                break;
+            }
+        }
+
+        NoticeController.clearNotice();
+        if(doc.orderUsers.length == 0){
+            doc.remove();
+            NoticeController.addUserCancelNotice(userId, classId, orderDate);
+            NoticeController.sendNotice();
+            res.redirect('/userOrderList');
+        }
+        else {
+            doc.save(function (err) {
+                if(err){
+                    req.session.errmsg = '删除失败,请重试！';
+                    res.redirect('/userOrderList');
+                }
+                else{
+                    NoticeController.addUserCancelNotice(userId, classId, orderDate);
+                    NoticeController.sendNotice();
+                    res.redirect('/userOrderList');
+                }
+            });
+        }
     });
 };
 
-exports.bindEmail = function (req, res, next) {
-    var iphone = req.body.iphone;
-    var id = req.body.id;
-    var code = req.body.code;
-    res.redirect('/user/'+id+'/edit');
-};
+//用户userEnter
+exports.userEnter = function (req, res, next) {
+    if(!req.session.user)res.redirect('/login');
 
-exports.bindIphone = function (req, res, next) {
-    var iphone = req.body.iphone;
-    var id = req.body.id;
-    var code = req.body.code;
-    res.redirect('/user/'+id+'/edit');
+    var id = req.params.id;
+    var userId = req.session.user.userId;
+    console.log('order delete:',userId, id);
+    db.findOneById(id, function(err, doc) {
+        if (err || !doc) {
+            req.session.errmsg = '确认失败,请重试！';
+            res.redirect('/userOrderList');
+        }
+        var classId = doc.classId;
+        var orderDate = doc.orderDate;
+
+        for(var i = doc.orderUsers.length - 1;i>=0;i--){
+            if(doc.orderUsers[i].userId == userId){
+                doc.orderUsers[i].userSuccessed = true;
+                break;
+            }
+        }
+        NoticeController.clearNotice();
+        doc.save(function (err) {
+            if(err){
+                req.session.errmsg = '确认失败,请重试！';
+                res.redirect('/userOrderList');
+            }
+            else{
+                NoticeController.addUserEnterNotice(userId, classId, orderDate);
+                NoticeController.sendNotice();
+                res.redirect('/userOrderList');
+            }
+        });
+    });
 };
