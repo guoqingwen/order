@@ -10,13 +10,16 @@ var jiaxiaoController = require('./controllers/JiaxiaoController');
 var storeController = require('./controllers/JiaxiaoStoreController');
 var orderController = require('./controllers/JiaxiaoOrderController');
 var classController = require('./controllers/JiaxiaoClassController');
+var indexController = require('./controllers/IndexController');
 var app = express();
+var ejs = require('ejs');
 
 app.engine('html', require('ejs').renderFile);
 app.configure(function(){
 
   app.set('port', config.port);
   app.set('view engine', 'ejs');
+  app.engine('.html', ejs.__express);
   app.set('views', __dirname + '/views');
 
   //use cookie session
@@ -59,9 +62,13 @@ app.get('/logout',function(req,res){
     req.session.user = null;
     res.redirect('/login');
 });
-app.get('/demo',function(req,res){
-    res.render('demo/index.html');
-});
+//首页链接
+app.get('/index_about', indexController.about);
+app.get('/index_contact', indexController.contact);
+app.get('/index_news', indexController.news);
+app.get('/index_timeline', indexController.timeline);
+app.get('/index_zhaopin', indexController.zhaopin);
+
 
 //用户后台接口
 app.get('/getVerificationCode', commonController.getVerificationCode);
@@ -81,6 +88,7 @@ app.get('/getJiaxiaoName', jiaxiaoController.getName);
 app.get('/getJiaxiaos', jiaxiaoController.getList);
 
 app.get('/jiaxiao', jiaxiaoController.index);
+app.get('/jiaxiao_new', jiaxiaoController.index);//新加入驾校
 app.get('/jiaxiao/:id', jiaxiaoController.view);
 app.get('/jiaxiao/:id/edit', jiaxiaoController.edit);
 app.get('/jiaxiao/:id/delete', jiaxiaoController.delete);
