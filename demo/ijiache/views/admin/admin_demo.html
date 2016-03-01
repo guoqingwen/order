@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+
+<!--[if !IE]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+
+<!-- BEGIN HEAD -->
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Ijiache.com | 爱驾车用户后台管理</title>
+
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <meta content="" name="description" />
+
+    <meta content="" name="author" />
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+
+    <link href="media/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style-metro.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+
+    <link href="media/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL STYLES -->
+
+    <link href="media/css/jquery.gritter.css" rel="stylesheet" type="text/css"/>
+
+    <link href="media/css/daterangepicker.css" rel="stylesheet" type="text/css" />
+
+    <!-- END PAGE LEVEL STYLES -->
+
+    <link rel="shortcut icon" href="media/image/favicon.ico" />
+
+</head>
+
+<!-- END HEAD -->
+
+<!-- BEGIN BODY -->
+
+<body class="page-header-fixed">
+
+<!-- BEGIN HEADER -->
+
+<div class="header navbar navbar-inverse navbar-fixed-top">
+
+    <!-- BEGIN TOP NAVIGATION BAR -->
+
+    <div class="navbar-inner">
+
+        <div class="container-fluid">
+
+            <!-- BEGIN LOGO -->
+
+            <a class="brand" href="/">
+
+                <img src="media/image/logo.png" alt="logo"/>
+
+            </a>
+
+            <!-- END LOGO -->
+
+            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+
+            <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+
+                <img src="media/image/menu-toggler.png" alt="" />
+
+            </a>
+
+            <!-- END RESPONSIVE MENU TOGGLER -->
+
+            <!-- BEGIN TOP NAVIGATION MENU -->
+
+            <ul class="nav pull-right">
+
+                <!-- BEGIN INBOX DROPDOWN -->
+
+                <li class="dropdown" id="header_inbox_bar">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                        <i class="icon-envelope"></i>
+
+                        <span class="badge">1</span>
+
+                    </a>
+
+                    <ul class="dropdown-menu extended inbox">
+
+                        <li>
+
+                            <p>您有 1 条新的消息</p>
+
+                        </li>
+
+
+                        <li>
+
+                            <a href="inbox.html?a=view">
+
+                                    <span class="photo"><img src="./media/image/avatar3.jpg" alt="" /></span>
+
+								<span class="subject">
+
+								<span class="from">Richard Doe</span>
+
+								<span class="time">16 mins</span>
+
+								</span>
+
+								<span class="message">
+
+								Vivamus sed congue nibh auctor nibh congue nibh. auctor nibh
+
+								auctor nibh...
+
+								</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="external">
+
+                            <a href="/admin">查看所有消息 <i class="m-icon-swapright"></i></a>
+
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                <!-- END INBOX DROPDOWN -->
+
+                <!-- BEGIN USER LOGIN DROPDOWN -->
+
+                <li class="dropdown user">
+
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                        <img alt="" src="media/image/avatar1_small.jpg" />
+
+                        <span class="username"><%= user.username %></span>
+
+                        <i class="icon-angle-down"></i>
+
+                    </a>
+
+                    <ul class="dropdown-menu">
+
+                        <li><a href="/user/<%- user.userId%>/edit"><i class="icon-user"></i> 个人资料</a></li>
+
+                        <li class="divider"></li>
+
+                        <li><a href="/login_lock"><i class="icon-lock"></i> 锁 屏</a></li>
+
+                        <li><a href="/logout"><i class="icon-key"></i> 退 出 </a></li>
+
+                    </ul>
+
+                </li>
+
+                <!-- END USER LOGIN DROPDOWN -->
+
+            </ul>
+
+            <!-- END TOP NAVIGATION MENU -->
+
+        </div>
+
+    </div>
+
+    <!-- END TOP NAVIGATION BAR -->
+
+</div>
+
+<!-- END HEADER -->
+
+<!-- BEGIN CONTAINER -->
+
+<div class="page-container">
+
+    <!-- BEGIN SIDEBAR -->
+
+    <div class="page-sidebar nav-collapse collapse">
+
+        <!-- BEGIN SIDEBAR MENU -->
+
+        <ul class="page-sidebar-menu">
+
+            <li>
+
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+                <div class="sidebar-toggler hidden-phone"></div>
+
+                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+
+            </li>
+
+            <li>
+
+                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
+
+                <form class="sidebar-search">
+
+                    <div class="input-box">
+
+                        <a href="javascript:;" class="remove"></a>
+
+                        <input type="text" placeholder="Search..." />
+
+                        <input type="button" class="submit" value=" " />
+
+                    </div>
+
+                </form>
+
+                <!-- END RESPONSIVE QUICK SEARCH FORM -->
+
+            </li>
+
+            <li class="start active ">
+
+                <a href="index.html">
+
+                    <i class="icon-home"></i>
+
+                    <span class="title">首 页</span>
+
+                    <span class="selected"></span>
+
+                </a>
+
+            </li>
+
+            <li class="">
+
+                <a href="javascript:;">
+
+                    <i class="icon-bookmark-empty"></i>
+
+                    <span class="title">个人中心</span>
+
+                    <span class="arrow "></span>
+
+                </a>
+
+                <ul class="sub-menu">
+
+                    <li >
+
+                        <a href="/user/<%- user.userId%>/edit">
+
+                            个人资料</a>
+
+                    </li>
+
+                    <li >
+
+                        <a href="/userUpdatePwd">
+
+                            修改密码</a>
+
+                    </li>
+
+                    <li >
+                        <a href="/userOrderList">
+
+                            我的课程</a>
+                    </li>
+
+                    <li >
+                        <a href="/userOrderList">
+
+                            消息中心</a>
+                    </li>
+                </ul>
+
+            </li>
+
+            <li>
+
+                <a href="/userOrderList">
+
+                    <i class="icon-bar-chart"></i>
+
+                    <span class="title">我的课程</span>
+
+                </a>
+
+            </li>
+
+
+            <li class="last ">
+
+                <a href="/userOrderClass">
+
+                    <i class="icon-bar-chart"></i>
+
+                    <span class="title">报名练车</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+        <!-- END SIDEBAR MENU -->
+
+    </div>
+
+    <!-- END SIDEBAR -->
+
+    <!-- BEGIN PAGE -->
+
+    <div class="page-content">
+
+        <!-- BEGIN PAGE CONTAINER-->
+
+        <div class="container-fluid">
+
+
+        </div>
+
+        <!-- END PAGE CONTAINER-->
+
+    </div>
+
+    <!-- END PAGE -->
+
+</div>
+
+<!-- END CONTAINER -->
+
+<!-- BEGIN FOOTER -->
+
+<div class="footer">
+    <div class="footer-inner">
+        <!--<a href="about.html">关于我们</a> <i></i>
+        <a href="join.html">加入我们</a> <i></i>
+        <a href="contact.html">联系我们</a> <i></i>
+        <a href="help.html">用户帮助</a> <br>-->
+        Copyright © 2015 Ijiache. All Rights Reserved.
+    </div>
+
+    <div class="footer-tools">
+
+			<span class="go-top">
+
+			<i class="icon-angle-up"></i>
+
+			</span>
+
+    </div>
+
+</div>
+
+<!-- END FOOTER -->
+
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+
+<!-- BEGIN CORE PLUGINS -->
+
+<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
+
+<script src="media/js/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+
+<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+
+<script src="media/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+
+<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
+
+<!--[if lt IE 9]>
+
+<script src="media/js/excanvas.min.js"></script>
+
+<script src="media/js/respond.min.js"></script>
+
+<![endif]-->
+
+<script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.uniform.min.js" type="text/javascript" ></script>
+
+<!-- END CORE PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script src="media/js/jquery.flot.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.flot.resize.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.pulsate.min.js" type="text/javascript"></script>
+
+<script src="media/js/date.js" type="text/javascript"></script>
+
+<script src="media/js/daterangepicker.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.gritter.js" type="text/javascript"></script>
+
+<script src="media/js/jquery.sparkline.min.js" type="text/javascript"></script>
+
+<!-- END PAGE LEVEL PLUGINS -->
+
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+
+<script src="media/js/app.js" type="text/javascript"></script>
+
+<script src="media/js/index.js" type="text/javascript"></script>
+
+<!-- END PAGE LEVEL SCRIPTS -->
+
+<script>
+
+    jQuery(document).ready(function() {
+
+        App.init(); // initlayout and core plugins
+
+        Index.init();
+
+        Index.initDashboardDaterange();
+
+        Index.initIntro();
+
+    });
+
+</script>
+
+<!-- END JAVASCRIPTS -->
+
+</body>
+
+<!-- END BODY -->
+
+</html>

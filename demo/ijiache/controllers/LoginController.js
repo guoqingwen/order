@@ -83,7 +83,7 @@ exports.edit = function (req, res, next) {
 			return next(err);
 		}
 		//console.log("edit:", doc);
-		res.render("admin/admin_user_info.html",{todo:doc});
+		res.render("admin/admin_user_info.html",{user:req.session.user, todo:doc});
 	});
 };
 

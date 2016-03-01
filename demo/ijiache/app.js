@@ -58,6 +58,7 @@ app.get('/register', commonController.register);
 app.get('/admin', commonController.admin);
 app.get('/checkUserName', loginController.checkUserName);
 app.get('/users', loginController.users);
+app.get('/login_lock', commonController.login_lock);
 app.get('/logout',function(req,res){
     req.session.user = null;
     res.redirect('/login');

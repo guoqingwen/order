@@ -11,6 +11,9 @@ exports.index = function (req, res, next) {
 exports.login = function (req, res, next) {
     res.render('login.html');
 };
+exports.login_lock = function (req, res, next) {
+    res.render('admin/admin_lock.html', {user:req.session.user});
+};
 exports.register = function (req, res, next) {
     res.render('register.html');
 };
