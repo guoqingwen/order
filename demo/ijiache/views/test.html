@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="js/jquery.min.js"></script>
+    <title>Title</title>
+    <script type="text/javascript">
+        function clickMessage(){
+
+            $.ajax({
+                type:'post',
+                url:"/message",
+                data:{id:10000000},
+                datatype:'json',
+                success:function(data){  //以我的写法，这里success是没有执行到的，直接跑到message处理程序，成功删除就over了
+                    if(data){
+                        console.log('成功了啊');
+                    } else{
+                        console.log("返回值为空");
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+<body>
+    <%= title %>
+
+    <button onclick="clickMessage();">click</button>
+</body>
+</html>

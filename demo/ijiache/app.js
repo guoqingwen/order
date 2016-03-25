@@ -38,6 +38,7 @@ app.configure(function(){
       res.locals.message = req.session.message;
       res.locals.errmsg = req.session.errmsg;
     }
+    console.log("req:", req.body, req.query);
     next();
   });
   app.use(express.logger('dev'));
@@ -52,6 +53,7 @@ app.configure('development', function(){
 });
 
 app.get('/', commonController.index);
+app.get('/demo', commonController.demo);
 app.get('/init', commonController.init);
 app.get('/login', commonController.login);
 app.get('/register', commonController.register);
@@ -118,7 +120,7 @@ app.post('/user/login', loginController.userLogin);
 app.post('/user/register', loginController.userRegister);
 app.post('/user/updatePwd', loginController.updatePwd);
 app.post('/user/orderList', orderController.index);
-app.post('/user/:id/edit', loginController.save);
+app.post('/user/updateInfo', loginController.save);
 app.get('/user/:id/edit', loginController.edit);
 app.get('/user/orderList', orderController.index);
 app.post('/user/orderAdd', orderController.add);

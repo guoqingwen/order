@@ -88,7 +88,7 @@ exports.edit = function (req, res, next) {
 };
 
 exports.save = function (req, res, next) {
-	var userId = req.params.id;
+	var userId = req.body.userid;
 	db.findByObj({_id:userId}, function (err, doc) {
 		if (err) {
 			return next(err);
@@ -106,23 +106,24 @@ exports.save = function (req, res, next) {
 };
 
 exports.updatePwd = function (req, res, next) {
-	var username = req.body.username;
+	var username = req.session.user.username;
 	var pwd = req.body.pwd;
 	var newPwd = req.body.newPwd;
 	var newPwdTwo = req.body.newPwdTwo;
-	var message = "";
+
+	//console.log("updatePwd:", pwd, newPwd, newPwdTwo, req.body);
 
 	if (newPwd == newPwdTwo)
 	{
 		if (newPwd == pwd)
 		{
-			res.render("message.html",{message:"新密码与原密码一致"});
+			res.json({ret:0,msg:"新密码与原密码一致"});
 		}
 		else {
 			db.findUserById(username, function (err, doc) {
 				if (err)
 				{
-					res.render("message.html",{message:"修改密码错误"});
+					res.json({ret:0,msg:"修改密码错误"});
 				}
 				if (doc) {
 					console.log("updatePwd:",doc);
@@ -131,16 +132,16 @@ exports.updatePwd = function (req, res, next) {
 						doc.save(function(err) {
 							if (err) {
 								util.log('FATAL '+ err);
-								res.render("message.html",{message:"修改密码错误"});
+								res.json({ret:0,msg:"修改密码错误"});
 							}
 							else
 							{
-								res.render("message.html",{message:"修改密码成功"});
+								res.json({ret:1,msg:"修改密码成功"});
 							}
 						});
 					}
 					else {
-						res.render("message.html",{message:"原密码错误"});
+						res.json({ret:0,msg:"原密码错误"});
 					}
 				}
 			});
@@ -148,7 +149,6 @@ exports.updatePwd = function (req, res, next) {
 	}
 	else
 	{
-		res.render("message.html",{message:"密码两次输入不一致！"});
+		res.json({ret:0,msg:"密码两次输入不一致！"});
 	}
-
 };

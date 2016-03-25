@@ -75,3 +75,7 @@ exports.init = function (req, res, next) {
     user.save(); 
     res.send('Data inited'); 
 };
+
+exports.demo = function (req, res, next) {
+    res.render('demo/index.html');
+};
