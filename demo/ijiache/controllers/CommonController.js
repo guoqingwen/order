@@ -21,7 +21,12 @@ exports.updatePwd = function (req, res, next) {
     res.render("admin/admin_password.html",{user:req.session.user});
 };
 exports.orderClass = function (req, res, next) {
-    res.render("admin/order_class.html",{user:req.session.user, condition:{province:"广东",city:"深圳",district:"南山区"}, orders:[]});
+    if (req.session.user){
+        res.render("admin/order_class.html",{user:req.session.user, condition:{province:"广东",city:"深圳",district:"南山区"}, orders:[]});
+    }
+    else{
+        res.redirect('/login');
+    }
 };
 exports.classAdd = function (req, res, next) {
     res.render("admin/add_class.html",{user:req.session.user, store:req.session.store, condition:{province:"广东",city:"深圳",district:"南山区"}});

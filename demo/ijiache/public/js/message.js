@@ -18,12 +18,20 @@ function setErrMsg(msg){
     $('#errdiv').show();
     $('#errdiv>p').html(msg);
     $('#succdiv').hide();
+    setTimeout(function () {
+        $('#errdiv').hide();
+        $('#succdiv').hide();
+    }, 3000);
 }
 
 function setSuccMsg(msg){
     $('#succdiv').show();
     $('#succdiv>p').html(msg);
     $('#errdiv').hide();
+    setTimeout(function () {
+        $('#errdiv').hide();
+        $('#succdiv').hide();
+    }, 3000);
 }
 /*
 <div id="errdiv" class="alert alert-error" style="display:none">

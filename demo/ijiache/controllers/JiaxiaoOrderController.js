@@ -18,7 +18,7 @@ exports.index = function (req, res, next) {
     var storeId = req.query.storeId;
     var orderDate = req.query.orderDate;
 
-    //console.log(orderDate);
+    console.log("orderList:",storeId,jiaxiaoId,orderDate);
     /*storeDb.findStoreByObj({jiaxiaoId:jiaxiaoId, province:province, city:city, district:district}, function(err, doc){
     });*/
     var obj = {
@@ -46,7 +46,8 @@ exports.index = function (req, res, next) {
             order.endTime = dateUtils.dateToTimeStr(todo.endTime);
             orders.push(order);
         }
-        res.render('admin/order_class_list.html', {orders: orders,orderDate:orderDate});
+        res.json({orders: orders,orderDate:orderDate});
+        //res.render('admin/order_class_list.html', {orders: orders,orderDate:orderDate});
     });
 };
 
@@ -58,7 +59,7 @@ exports.userOrderList = function (req, res, next) {
     var obj = {
         "orderUsers.userId":userId
     };
-    orderDb.findOneByObj(obj,function (err, todos) {
+    orderDb.findByObj(obj,function (err, todos) {
         if (err) {
             return next(err);
         }
@@ -82,8 +83,10 @@ exports.userOrderList = function (req, res, next) {
                 }
             }
             order.classId = todo.classId;
+            console.log("start classDb.findOneById",order);
             DBQuery.query(classDb.findOneById,todo.classId,order,{"title":"title","startTime":"startTime","endTime":"endTime"},function(){
                 queryNum--;
+                console.log("classDb.findOneById",queryNum);
                 if(queryNum == 0){
                     res.json({orders: orders});
                     //res.json('admin/order_list.html', {orders: orders});
@@ -94,6 +97,9 @@ exports.userOrderList = function (req, res, next) {
             order.successed = userObj.successed;
             order.userSuccessed = userObj.userSuccessed;
             orders.push(order);
+        }
+        if (len == 0){
+            res.json({orders: []});
         }
         //res.render('admin/order_list.html', {orders: orders});
     });

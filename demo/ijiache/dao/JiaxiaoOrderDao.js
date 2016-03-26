@@ -31,7 +31,8 @@ exports.add = function(classId, date, userId, notice, callback) {
     exports.findOneByObj({"classId":classId, "orderDate":date}, function(err, doc) {
         if (err)
             callback(err);
-        else if (doc.length > 0) {
+        else if (doc) {
+            console.log("添加报名：",doc);
             var hased = false;
             for(var i = doc.orderUsers.length - 1; i >= 0; i--){
                 if(doc.orderUsers[i].userId == userId){
@@ -41,6 +42,10 @@ exports.add = function(classId, date, userId, notice, callback) {
             }
             if(!hased){
                 doc.orderUsers.push({userId: userId, notice: notice, successed: false});
+            }
+            else{
+                callback(null);
+                return;
             }
         }
         else {
@@ -64,7 +69,7 @@ exports.add = function(classId, date, userId, notice, callback) {
 
 //获取用户报名课程列表
 exports.userOrders = function(userId, callback) {
-    exports.findOneByObj({"orderUsers.userId":userId}, function(err, doc) {
+    exports.findByObj({"orderUsers.userId":userId}, function(err, doc) {
         if (err)
             callback(err);
         else if (doc)
@@ -74,17 +79,17 @@ exports.userOrders = function(userId, callback) {
 
 //获取可以报名课程列表
 exports.ordersByDate = function(date, callback) {
-    exports.findOneByObj({"date":date}, callback);
+    exports.findByObj({"date":date}, callback);
 }
 
 //获取可以报名课程列表
 exports.ordersByClass = function(classId, callback) {
-    exports.findOneByObj({"classId":classId}, callback);
+    exports.findByObj({"classId":classId}, callback);
 }
 
 //获取可以报名课程列表
 exports.orders = function(classId, date, callback) {
-    exports.findOneByObj({"classId":classId, "date":date}, callback);
+    exports.findByObj({"classId":classId, "date":date}, callback);
 }
 
 //获取可以报名课程列表
@@ -141,6 +146,16 @@ var findOneById = exports.findOneById = function(id,callback){
 }
 
 exports.findOneByObj = function(findObj, callback){
+    JiaxiaoOrderStore.findOne(findObj,function(err,doc){
+        if (err) {
+            util.log('FATAL '+ err);
+            callback(err, null);
+        }
+        callback(null, doc);
+    });
+}
+
+exports.findByObj = function(findObj, callback){
     JiaxiaoOrderStore.find(findObj,function(err,doc){
         if (err) {
             util.log('FATAL '+ err);

@@ -2,40 +2,41 @@
  * Created by wenguoqing on 2016/3/25.
  */
 
-var UserInfo = function () {
+var InitUserInfo = function () {
     return {
         init:function(){
-            alert("init");
+
             $.ajax({
                 url:'/userOrderList',
                 type:'get',
                 data:{},
                 success: function (data) {
-                    alert(data.orders);
+                    //alert(data.orders);
                     var len = data.orders.length;
                     for(var i = 0; i < len; i++){
                         var todo = data.orders[i];
-                        var oprateStr = '<a class="btn" href="/store_order/'+todo._id+'/delete">取消</a>';
-
-                        if(todo.userSuccessed){
-                            oprateStr += '<strong>已确认</strong>'
-                        }
-                        else{
-                            oprateStr += '<a class="btn" href="/store_order/'+todo._id+'/enter">确认</a>';
-                        }
-
                         var succStr = '';
                         if (todo.successed){
                             succStr += '成功:'+ todo.orderNotice;
                         }
                         else{
-                            succStr += '否';
+                            succStr += '等待驾校确认';
+                        }
+
+                        var oprateStr = '<a class="btn mini red" href="/store_order/'+todo._id+'/delete">取消</a>';
+
+                        if(todo.userSuccessed){
+                            oprateStr += '<span class="label label-success label-mini">驾校已确认</span>'
+                        }
+                        else if (todo.successed){
+                            oprateStr += '<a class="btn mini green" href="/store_order/'+todo._id+'/enter">确认</a>';
                         }
 
                         var trStr =
                             '<td class="hidden-phone"><a href="#">'+(i+1)+'</a></td>'+
                             '<td>'+todo.title+'</td>'+
-                            '<td>日期:'+todo.orderDate+'-'+todo.startTime+'-'+todo.endTime+'</td>'+
+                            '<td>'+todo.orderDate+'</td>'+
+                            '<td>'+todo.startTime + '-' + todo.endTime+'</td>'+
                             '<td>'+succStr+'</td>'+
                             '<td>'+todo.notice+'</td>'+
                             '<td>'+oprateStr+'</td>';

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>预约课程筛选条件</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/utils.js"></script>
+    <script type="text/javascript" src="/js/city/jquery.cityselect.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#id_city_list").citySelect({
+                prov:"<%= condition.province %>",
+                city:"<%= condition.city %>",
+                dist:"<%= condition.district %>",
+                nodata:"none"
+            });
+            //alert(new Date().format("yyyy-MM-dd"));
+            $("#id_date").attr('value', new Date().format("yyyy-MM-dd"));
+
+            $("#id_city,#id_prov,#id_dist").change(function(){
+                updateStores($("#id_prov").val(),$("#id_city").val(),$("#id_dist").val(),"");
+            });
+
+            $("#id_jiaxiao").change(function(){
+                updateStores($("#id_prov").val(),$("#id_city").val(),$("#id_dist").val(),$("#id_jiaxiao").val());
+            });
+
+            $.ajax({url:'/getJiaxiaos',
+                    type:'get',
+                    date:{},
+                    dateType:'json',
+                    success:function(data){
+                        var len = data.length;
+                        for (var i = 0 ; i < len; i++){
+                            var obj = data[i];
+                            $("#id_jiaxiao").append('<option value='+obj._id+'>'+obj.title+'</option>');
+                        }
+                     }
+                }
+            );
+            updateStores("<%= condition.province %>","<%= condition.city %>","<%= condition.district %>","");
+            function updateStores(province,city,district,jiaxiao){
+                $.ajax({url:'/getJiaxiaoStores?province='+province+'&city='+city+'&district='+district+'&jiaxiaoId='+jiaxiao,
+                            type:'get',
+                            date:{},
+                            dateType:'json',
+                            success:function(data){
+                                var len = data.length;
+                                $("#id_store").children('option').remove();
+                                for (var i = 0 ; i < len; i++){
+                                    var obj = data[i];
+                                    $("#id_store").append('<option value='+obj._id+'>'+obj.title+'</option>');
+                                }
+                            }
+                        }
+                );
+            }
+
+        });
+    </script>
+</head>
+<body>
+<div >
+    <p>筛选条件</p>
+    <form action="/user/orderList" method="get">
+        <div>
+            <label for="id_jiaxiao">驾校:</label>
+            <select id="id_jiaxiao" name="jiaxiaoId"></select>
+        </div>
+        <div>
+            <div id="id_city_list">
+                <label for="city">城市:</label>
+                <select id="id_prov" class="prov" name="province"></select>
+                <select id="id_city" class="city" name="city" disabled="disabled"></select>
+                <select id="id_dist" class="dist" name="district" disabled="disabled"></select>
+            </div>
+        </div>
+
+        <div>
+            <label for="id_store">驾校门店:</label>
+            <select id="id_store" name="storeId"></select>
+        </div>
+        <div>
+            <label for="id_date">日期：</label><input id="id_date" name="orderDate" type="date" />
+        </div>
+        <button value="">查询</button>
+    </form>
+</div>
+</body>
+</html>
