@@ -50,7 +50,7 @@ exports.index = function (req, res, next) {
     });
 };
 
-// 用户登陆我的报名课程
+// 获取我的报名课程
 exports.userOrderList = function (req, res, next) {
     if(!req.session.user)res.redirect('/login');
     var userId = req.session.user.userId;
@@ -85,7 +85,8 @@ exports.userOrderList = function (req, res, next) {
             DBQuery.query(classDb.findOneById,todo.classId,order,{"title":"title","startTime":"startTime","endTime":"endTime"},function(){
                 queryNum--;
                 if(queryNum == 0){
-                    res.render('admin/order_list.html', {orders: orders});
+                    res.json({orders: orders});
+                    //res.json('admin/order_list.html', {orders: orders});
                 }
             });
             order.userId = userId;

@@ -258,49 +258,15 @@
                 </a>
 
             </li>
-
             <li class="active">
 
-                <a href="javascript:;">
+                <a href="/userInfo">
 
-                    <i class="icon-bookmark-empty"></i>
+                    <i class="icon-bar-chart"></i>
 
                     <span class="title">个人中心</span>
 
-                    <span class="arrow "></span>
-
                 </a>
-
-                <ul class="sub-menu">
-
-                    <li class="active">
-
-                        <a href="/user/<%- user.userId%>/edit">
-
-                            个人资料</a>
-
-                    </li>
-
-                    <li >
-
-                        <a href="/userUpdatePwd">
-
-                            修改密码</a>
-
-                    </li>
-
-                    <li >
-                        <a href="/userOrderList">
-
-                            我的课程</a>
-                    </li>
-
-                    <li >
-                        <a href="/userOrderList">
-
-                            消息中心</a>
-                    </li>
-                </ul>
 
             </li>
 
@@ -355,7 +321,7 @@
 
                     <h3 class="page-title">
 
-                        Ijiache.com | 个人资料 <small>欢迎你来到爱驾车用户后台管理</small>
+                        Ijiache.com | 个人中心 <small>欢迎你来到爱驾车用户后台管理</small>
 
                     </h3>
 
@@ -371,7 +337,7 @@
 
                         </li>
 
-                        <li><span>个人资料</span></li>
+                        <li><span>个人中心</span></li>
 
                     </ul>
                     <div id="errdiv" class="alert alert-error" style="display:none">
@@ -497,20 +463,17 @@
                                                             <thead>
 
                                                             <tr>
-
-                                                                <th><i class="icon-briefcase"></i> Company</th>
-
-                                                                <th class="hidden-phone"><i class="icon-question-sign"></i> Descrition</th>
-
-                                                                <th><i class="icon-bookmark"></i> Amount</th>
-
+                                                                <th class="hidden-phone"><i></i> </th>
+                                                                <th><i class="icon-briefcase"></i> 课程</th>
+                                                                <th><i class="icon-time"></i> 时间 </th>
+                                                                <th><i class="icon-question-sign"></i> 报名成功 </th>
+                                                                <th><i class="icon-bookmark"></i> 备注 </th>
                                                                 <th></th>
-
                                                             </tr>
 
                                                             </thead>
 
-                                                            <tbody>
+                                                            <tbody id="id_order_list">
 
                                                             <tr>
 
@@ -525,117 +488,13 @@
                                                             </tr>
 
                                                             <tr>
-
                                                                 <td>
-
-                                                                    <a href="#">
-
-                                                                        Smart House
-
-                                                                    </a>
-
+                                                                    <a href="#">Smart House</a>
                                                                 </td>
-
                                                                 <td class="hidden-phone">Office furniture purchase</td>
-
                                                                 <td>5760.00$ <span class="label label-warning label-mini">Pending</span></td>
-
                                                                 <td><a class="btn mini blue-stripe" href="#">View</a></td>
-
                                                             </tr>
-
-                                                            <tr>
-
-                                                                <td>
-
-                                                                    <a href="#">
-
-                                                                        FoodMaster Ltd
-
-                                                                    </a>
-
-                                                                </td>
-
-                                                                <td class="hidden-phone">Company Anual Dinner Catering</td>
-
-                                                                <td>12400.00$ <span class="label label-success label-mini">Paid</span></td>
-
-                                                                <td><a class="btn mini blue-stripe" href="#">View</a></td>
-
-                                                            </tr>
-
-                                                            <tr>
-
-                                                                <td>
-
-                                                                    <a href="#">
-
-                                                                        WaterPure Ltd
-
-                                                                    </a>
-
-                                                                </td>
-
-                                                                <td class="hidden-phone">Payment for Jan 2013</td>
-
-                                                                <td>610.50$ <span class="label label-danger label-mini">Overdue</span></td>
-
-                                                                <td><a class="btn mini red-stripe" href="#">View</a></td>
-
-                                                            </tr>
-
-                                                            <tr>
-
-                                                                <td><a href="#">Pixel Ltd</a></td>
-
-                                                                <td class="hidden-phone">Server hardware purchase</td>
-
-                                                                <td>52560.10$ <span class="label label-success label-mini">Paid</span></td>
-
-                                                                <td><a class="btn mini green-stripe" href="#">View</a></td>
-
-                                                            </tr>
-
-                                                            <tr>
-
-                                                                <td>
-
-                                                                    <a href="#">
-
-                                                                        Smart House
-
-                                                                    </a>
-
-                                                                </td>
-
-                                                                <td class="hidden-phone">Office furniture purchase</td>
-
-                                                                <td>5760.00$ <span class="label label-warning label-mini">Pending</span></td>
-
-                                                                <td><a class="btn mini blue-stripe" href="#">View</a></td>
-
-                                                            </tr>
-
-                                                            <tr>
-
-                                                                <td>
-
-                                                                    <a href="#">
-
-                                                                        FoodMaster Ltd
-
-                                                                    </a>
-
-                                                                </td>
-
-                                                                <td class="hidden-phone">Company Anual Dinner Catering</td>
-
-                                                                <td>12400.00$ <span class="label label-success label-mini">Paid</span></td>
-
-                                                                <td><a class="btn mini blue-stripe" href="#">View</a></td>
-
-                                                            </tr>
-
                                                             </tbody>
 
                                                         </table>
@@ -1497,7 +1356,7 @@
 
                                                                 <label class="control-label">用户名</label>
 
-                                                                <input type="text" contenteditable="false" value="<%= user.username %>" name="info_username" placeholder="字母或数字" class="m-wrap span8" />
+                                                                <input type="text" disabled="true" contenteditable="false" value="<%= user.username %>" name="info_username" placeholder="字母或数字" class="m-wrap span8" />
 
                                                                 <label class="control-label">名字</label>
 
@@ -1515,7 +1374,7 @@
 
                                                                 <div class="controls">
 
-                                                                    <input type="text" class="span8 m-wrap" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;Alabama&quot;,&quot;Alaska&quot;,&quot;Arizona&quot;,&quot;Arkansas&quot;,&quot;US&quot;,&quot;Colorado&quot;,&quot;Connecticut&quot;,&quot;Delaware&quot;,&quot;Florida&quot;,&quot;Georgia&quot;,&quot;Hawaii&quot;,&quot;Idaho&quot;,&quot;Illinois&quot;,&quot;Indiana&quot;,&quot;Iowa&quot;,&quot;Kansas&quot;,&quot;Kentucky&quot;,&quot;Louisiana&quot;,&quot;Maine&quot;,&quot;Maryland&quot;,&quot;Massachusetts&quot;,&quot;Michigan&quot;,&quot;Minnesota&quot;,&quot;Mississippi&quot;,&quot;Missouri&quot;,&quot;Montana&quot;,&quot;Nebraska&quot;,&quot;Nevada&quot;,&quot;New Hampshire&quot;,&quot;New Jersey&quot;,&quot;New Mexico&quot;,&quot;New York&quot;,&quot;North Dakota&quot;,&quot;North Carolina&quot;,&quot;Ohio&quot;,&quot;Oklahoma&quot;,&quot;Oregon&quot;,&quot;Pennsylvania&quot;,&quot;Rhode Island&quot;,&quot;South Carolina&quot;,&quot;South Dakota&quot;,&quot;Tennessee&quot;,&quot;Texas&quot;,&quot;Utah&quot;,&quot;Vermont&quot;,&quot;Virginia&quot;,&quot;Washington&quot;,&quot;West Virginia&quot;,&quot;Wisconsin&quot;,&quot;Wyoming&quot;]" />
+                                                                    <input type="text" disabled="false" class="span8 m-wrap" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source="[&quot;Alabama&quot;,&quot;Alaska&quot;,&quot;Arizona&quot;,&quot;Arkansas&quot;,&quot;US&quot;,&quot;Colorado&quot;,&quot;Connecticut&quot;,&quot;Delaware&quot;,&quot;Florida&quot;,&quot;Georgia&quot;,&quot;Hawaii&quot;,&quot;Idaho&quot;,&quot;Illinois&quot;,&quot;Indiana&quot;,&quot;Iowa&quot;,&quot;Kansas&quot;,&quot;Kentucky&quot;,&quot;Louisiana&quot;,&quot;Maine&quot;,&quot;Maryland&quot;,&quot;Massachusetts&quot;,&quot;Michigan&quot;,&quot;Minnesota&quot;,&quot;Mississippi&quot;,&quot;Missouri&quot;,&quot;Montana&quot;,&quot;Nebraska&quot;,&quot;Nevada&quot;,&quot;New Hampshire&quot;,&quot;New Jersey&quot;,&quot;New Mexico&quot;,&quot;New York&quot;,&quot;North Dakota&quot;,&quot;North Carolina&quot;,&quot;Ohio&quot;,&quot;Oklahoma&quot;,&quot;Oregon&quot;,&quot;Pennsylvania&quot;,&quot;Rhode Island&quot;,&quot;South Carolina&quot;,&quot;South Dakota&quot;,&quot;Tennessee&quot;,&quot;Texas&quot;,&quot;Utah&quot;,&quot;Vermont&quot;,&quot;Virginia&quot;,&quot;Washington&quot;,&quot;West Virginia&quot;,&quot;Wisconsin&quot;,&quot;Wyoming&quot;]" />
 
                                                                     <p class="help-block"><span class="muted">关注并绑定微信，可实时消息通知</span></p>
 
@@ -1523,7 +1382,7 @@
 
                                                                 <label class="control-label">自我介绍</label>
 
-                                                                <textarea class="span8 m-wrap" rows="3"></textarea>
+                                                                <textarea class="span8 m-wrap" name="info_notice" rows="3" ><%=todo.notice%></textarea>
 
                                                                 <div class="submit-btn">
 
@@ -1829,17 +1688,17 @@
 
                                                                 <label class="control-label">手机号码</label>
 
-                                                                <input type="text" class="m-wrap span8" />
+                                                                <input type="text" class="m-wrap span8" name="check_iphone" value="<%=todo.iphone%>"/>
 
                                                                 <label class="control-label">验证码</label>
 
-                                                                <input type="text" class="m-wrap span8" />
+                                                                <input type="text" class="m-wrap span8" name="check_iphone_code" />
 
                                                                 <div class="submit-btn">
 
-                                                                    <a href="#" class="btn green">确认</a>
+                                                                    <a href="#" class="btn green" id="id_check_iphone">确 认</a>
 
-                                                                    <a href="#" class="btn">取 消</a>
+                                                                    <a href="#" class="btn" id="id_check_iphone_send">发送验证码</a>
 
                                                                 </div>
 
@@ -1857,17 +1716,17 @@
 
                                                                 <label class="control-label">邮箱</label>
 
-                                                                <input type="text" class="m-wrap span8" />
+                                                                <input type="text" name="check_email" value="<%=todo.email%>" class="m-wrap span8" />
 
                                                                 <label class="control-label">验证码</label>
 
-                                                                <input type="text" class="m-wrap span8" />
+                                                                <input type="text" name="check_email_code" class="m-wrap span8" />
 
                                                                 <div class="submit-btn">
 
-                                                                    <a href="#" class="btn green">确认</a>
+                                                                    <a href="#" class="btn green" id="id_check_email">确 认</a>
 
-                                                                    <a href="#" class="btn">取 消</a>
+                                                                    <a href="#" class="btn" id="id_check_email_send">发送验证码</a>
 
                                                                 </div>
 

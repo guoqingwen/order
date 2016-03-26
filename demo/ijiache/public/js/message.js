@@ -5,11 +5,13 @@ function responseMsg(data){
     if (data){
         if (data.ret == 1){
             setSuccMsg(data.msg);
+            return data.msg;
         }
         else {
             setErrMsg(data.msg);
         }
     }
+    return null;
 }
 
 function setErrMsg(msg){

@@ -77,7 +77,11 @@ exports.users = function (req, res, next) {
 };
 
 exports.edit = function (req, res, next) {
-	var userId = req.params.id;
+	if (!req.session.user){
+		res.redirect('/login');
+		return;
+	}
+	var userId = req.session.user.userId;
 	db.findByObj({_id:userId}, function (err, doc) {
 		if (err) {
 			return next(err);
@@ -91,16 +95,20 @@ exports.save = function (req, res, next) {
 	var userId = req.body.userid;
 	db.findByObj({_id:userId}, function (err, doc) {
 		if (err) {
-			return next(err);
+			res.json({ret:0,msg:"修改个人信息失败"});
+			return;
 		}
 		doc.iphone = req.body.iphone;
 		doc.email = req.body.email;
 		doc.name = req.body.name;
+		doc.notice = req.body.notice;
 		doc.save(function(err){
-			if(err){
-				req.session.errmsg = "修改个人信息失败";
+			if(err) {
+				res.json({ret:0,msg:"修改个人信息失败"});
+				//req.session.errmsg = "修改个人信息失败";
 			}
-			res.redirect("/user/"+doc._id+"/edit");
+			res.json({ret:1,msg:"修改个人信息成功"});
+			//res.redirect("/user/"+doc._id+"/edit");
 		});
 	});
 };
@@ -151,4 +159,19 @@ exports.updatePwd = function (req, res, next) {
 	{
 		res.json({ret:0,msg:"密码两次输入不一致！"});
 	}
+};
+
+exports.checkEmail = function (req, res, next) {
+	var email = req.body.email;
+	var id = req.body.userId;
+	var emailCode = req.body.emailCode;
+
+	res.render('admin/check_email.html',{email:email, id:id});
+};
+
+exports.checkIphone = function (req, res, next) {
+	var iphone = req.body.iphone;
+	var id = req.body.userId;
+	var iphoneCode = req.body.iphoneCode;
+	res.render('admin/check_iphone.html',{iphone:iphone, id:id});
 };

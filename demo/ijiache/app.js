@@ -38,7 +38,9 @@ app.configure(function(){
       res.locals.message = req.session.message;
       res.locals.errmsg = req.session.errmsg;
     }
-    console.log("req:", req.body, req.query);
+    if (req.body){
+        console.log("req:", req.body, req.query);
+    }
     next();
   });
   app.use(express.logger('dev'));
@@ -79,10 +81,8 @@ app.get('/userUpdatePwd', commonController.updatePwd);
 app.get('/userOrderClass', commonController.orderClass);
 app.get('/userOrderList', orderController.userOrderList);
 app.get('/store_order_list', orderController.adminOrderList);
-app.get('/userCheckEmail', commonController.checkEmail);
-app.get('/userCheckIphone', commonController.checkIphone);
-app.post('/user_bind_iphone', loginController.bindIphone);
-app.post('/user_bind_email', loginController.bindEmail);
+app.post('/userCheckEmail', loginController.checkEmail);
+app.post('/userCheckIphone', loginController.checkIphone);
 
 //驾校管理接口
 app.post('/jiaxiao/new', jiaxiaoController.new);
@@ -121,7 +121,7 @@ app.post('/user/register', loginController.userRegister);
 app.post('/user/updatePwd', loginController.updatePwd);
 app.post('/user/orderList', orderController.index);
 app.post('/user/updateInfo', loginController.save);
-app.get('/user/:id/edit', loginController.edit);
+app.get('/userInfo', loginController.edit);
 app.get('/user/orderList', orderController.index);
 app.post('/user/orderAdd', orderController.add);
 app.get('/store_order/:id/add', orderController.addHtml);

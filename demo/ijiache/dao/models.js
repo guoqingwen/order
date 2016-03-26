@@ -8,6 +8,7 @@ var _User = new Schema({
     password : String,//密码
     email:String,//邮箱
     iphone:String,//手机
+    notice:String,//简介
     checkIphone:{type:Boolean, default:false},//是否验证手机
     checkEmail:{type:Boolean, default:false},//是否验证邮箱
     checkWeixin:{type:Boolean, default:false}//是否验证微信
