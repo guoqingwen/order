@@ -1,0 +1,171 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="codebase/webix.css" />
+		<script type="text/javascript" src="codebase/webix.js"></script>
+		<script type="text/javascript">
+			var data = [
+				{id:1, folder:1, name:"Alex Stem", email:"alex@spam.com",subject:"invitation", date:"25/07/2016 12:30:20"},
+				{id:2, folder:1, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:3, folder:1, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:4, folder:1, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:5, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:6, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:7, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:8, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:9, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:10, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"},
+				{id:11, folder:2, name:"Sofia Neal", email:"sofia@spam.com",subject:"Report", date:"25/07/2016 16:30:20"}
+			];
+			//alert("test");
+			webix.ready(function(){
+				
+				webix.ui({
+					//type:"space",
+					rows:
+					[
+						{
+							view:"toolbar",
+							height:45,
+							elements:[
+								{
+									view:"label",
+									label:"My Email message"
+								}
+							]
+						},
+						{
+							type:"wide",
+							cols:[
+								{
+									type:"clean",
+									rows:[
+										{
+											view:"tree",
+											id:"my_tree",
+											select:true,
+											width:280,
+											data:[
+												{id:"1",value:"Inbox"},
+												{id:"2",value:"Sent"},
+												{id:"3",value:"Drafts"},
+												{id:"4",value:"Trash"},
+												{id:"5",value:"Contact Groups", open:true, data:[
+													{id:"5-1", value:"Friends"},
+													{id:"5-2", value:"Family"}
+												]},
+											]
+										},
+										{
+											view:"calendar",
+											timepicker:true
+										}
+									]
+								},
+								{
+									type:"wide",
+									rows:[
+										{
+											view:"datatable",
+											id:"my_datatable",
+											data:data,
+											select:true,
+											scrollX:false,
+											columns:[
+												{
+													id:"checked",
+													header:{content:"masterCheckbox"},
+													template:"{common.checkbox()}",
+													width:40
+												},
+												{
+													id:"name",width:250,header:"From"
+												},
+												{
+													id:"subject",header:"Subject",fillspace:true
+												},
+												{
+													id:"date",header:"Date",width:150
+												}
+											]
+										},
+										{
+											height:45,cols:[
+												{
+													view:"button",
+													label:"Reply",
+													width:95,
+													type:"iconButton",
+													icon:"reply"
+												},
+												{
+													view:"button",
+													label:"Create",
+													width:95,
+													type:"iconButton",
+													icon:"envelope",
+													click:function(){
+														$$('my_win').getBody().clear();
+														$$('my_win').show();
+													}		
+												},
+												{},
+												{
+													view:"button",
+													label:"Delete",
+													width:95,
+													type:"iconButton",
+													icon:"remove"	
+												}
+											]
+										},
+										{
+											id:"details",
+											template:"No message selected!"
+										}
+
+									]
+								}	
+							]
+						}
+					]
+					
+				});
+
+				$$('my_datatable').bind($$('my_tree'), function(obj, filter){
+					return obj.folder == filter.id;
+				});
+
+				$$('my_tree').select(1);
+
+				webix.ui({
+					view:"window",move:true,id:"my_win",width:600,
+					head:"New Message",position:"center",
+					body:{
+						view:"form",
+						borderless:true,
+						elements:[
+							{view:"text",label:"To:",name:"address"},
+							{view:"text",label:"Subject:",name:"subject"},
+							{view:"textarea",label:"Message:",name:"meaage",height:200},
+							{
+								cols:[
+									{
+										view:"button",value:"Send"
+									},
+									{
+										view:"button",value:"Close",
+										click:("$$('my_win').hide();")
+									}
+								]
+							}
+						]
+					}
+				});
+			});
+
+		</script>
+	</head>
+	<body>
+		
+	</body>
+</html>
